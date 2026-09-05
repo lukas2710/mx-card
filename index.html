@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
-  <title>MX Card Collector & Tycoon</title>
+  <title>MX Card Collector</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -71,35 +71,17 @@
       display: inline-block;
     }
 
-    .header-stats {
-      display: flex;
-      gap: 8px;
-    }
-
     .pieces-compteur {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       color: #1a140e;
       background: linear-gradient(180deg, #ffce3d, var(--accent-2));
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 6px;
       border: 1px solid #d99e00;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .income-compteur {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-      background: var(--surface-2);
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--line);
-      display: flex;
-      align-items: center;
     }
 
     nav {
@@ -123,22 +105,22 @@
       border-top: 3px solid transparent;
       color: var(--text-dim);
       font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.5px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 3px;
       cursor: pointer;
-      width: 25%;
+      width: 33%;
       height: 100%;
-      padding: 6px 0 4px 0;
+      padding: 8px 0 5px 0;
       transition: color 0.15s ease;
     }
 
-    .nav-btn .icon { font-size: 18px; filter: grayscale(0.6); transition: filter 0.15s ease; }
+    .nav-btn .icon { font-size: 19px; filter: grayscale(0.6); transition: filter 0.15s ease; }
     .nav-btn.actif { color: var(--accent-2); border-top-color: var(--accent); }
     .nav-btn.actif .icon { filter: none; }
 
@@ -181,8 +163,7 @@
     }
 
     .btn-action:active { transform: translateY(1px); border-bottom-width: 2px; }
-    .btn-action:disabled { background: #3a3128; color: var(--text-dim); border-bottom-color: #2a2319; cursor: not-allowed; }
-    
+    .btn-action:disabled { background: #3a3128; color: var(--text-dim); border-bottom-color: #2a2319; }
     .btn-reset {
       background: transparent;
       color: var(--text-dim);
@@ -221,7 +202,7 @@
     .carte-container {
       perspective: 1000px;
       width: 100%;
-      aspect-ratio: 2 / 3.2;
+      aspect-ratio: 2 / 3;
     }
 
     .carte-inner {
@@ -278,7 +259,7 @@
 
     .carte-image {
       width: 100%;
-      height: 38%;
+      height: 42%;
       border-radius: 4px;
       object-fit: cover;
       background: #000;
@@ -317,7 +298,6 @@
     .annee { font-size: 8px; text-align: center; color: #e9e2d2; font-weight: 700; }
     .carbone-bg .annee { color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.5px; }
     .puissance { font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 700; text-align: center; color: #fff2c4; }
-    .revenu-carte { font-size: 9px; text-align: center; color: var(--accent-2); font-weight: 800; background: rgba(0,0,0,0.3); border-radius: 3px; padding: 1px 0; }
     .type-moto { font-size: 8px; text-align: center; font-weight: 700; color: #17130f; background: rgba(255,255,255,0.55); border-radius: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
     .rarete { font-size: 8px; text-align: right; text-transform: uppercase; opacity: 0.85; }
 
@@ -340,21 +320,6 @@
       z-index: 10;
     }
 
-    .badge-niveau {
-      position: absolute;
-      top: -6px;
-      left: -6px;
-      background: #111;
-      color: var(--accent-2);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 10px;
-      font-weight: 800;
-      border-radius: 4px;
-      padding: 1px 4px;
-      border: 1px solid var(--accent-2);
-      z-index: 10;
-    }
-
     .badge-new {
       position: absolute;
       top: -6px;
@@ -369,27 +334,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.4);
       z-index: 10;
       text-transform: uppercase;
-    }
-
-    .btn-up-moto {
-      width: 100%;
-      background: linear-gradient(180deg, #ffce3d, var(--accent-2));
-      color: #1a140e;
-      border: none;
-      border-radius: 4px;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 3px 0;
-      cursor: pointer;
-      margin-top: 2px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    .btn-up-moto:disabled {
-      background: #3d352b;
-      color: #7a6e5d;
-      box-shadow: none;
-      cursor: not-allowed;
     }
 
     /* SÉLECTION MOTO ACTIVE */
@@ -701,108 +645,13 @@
       color: var(--text);
     }
     .panneau-resultats li { margin-bottom: 3px; }
-
-    /* SYSTEME TYCOON */
-    .tycoon-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .tycoon-item {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-
-    .tycoon-icon {
-      font-size: 32px;
-      background: var(--surface-2);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .tycoon-details {
-      flex-grow: 1;
-    }
-
-    .tycoon-title {
-      font-family: 'Teko', sans-serif;
-      font-size: 20px;
-      line-height: 1;
-      color: var(--text);
-    }
-
-    .tycoon-stats {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 2px;
-    }
-
-    .tycoon-stats b {
-      color: var(--accent-2);
-    }
-
-    .btn-upgrade {
-      background: linear-gradient(180deg, #38c95e, var(--mx-green));
-      color: #0e1f12;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 85px;
-    }
-
-    .btn-upgrade:disabled {
-      background: #3a3128;
-      color: var(--text-dim);
-      cursor: not-allowed;
-    }
-
-    .clicker-zone {
-      background: var(--surface);
-      border: 2px dashed var(--accent);
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      margin-bottom: 15px;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.05s ease;
-    }
-
-    .clicker-zone:active {
-      transform: scale(0.98);
-      background: var(--surface-2);
-    }
   </style>
 </head>
 <body>
 
   <header>
     <div class="logo">🏍️ MX Collector</div>
-    <div class="header-stats">
-      <div class="income-compteur">⚡ +<span id="revenu-passif">5</span>/s</div>
-      <div class="pieces-compteur">🪙 <span id="nb-pieces">100</span></div>
-    </div>
+    <div class="pieces-compteur">🪙 <span id="nb-pieces">100</span></div>
   </header>
 
   <!-- SECTION 1 : BOUTIQUE -->
@@ -827,30 +676,11 @@
       <h2>Garage (<span id="total-cartes">0</span>/<span id="max-cartes">0</span>)</h2>
       <button class="btn-action btn-reset" onclick="reinitialiserGarage()">Reset</button>
     </div>
-    <p style="font-size: 12px; color: var(--text-dim);">Touche une moto pour la sélectionner. Améliore-la pour augmenter la Puissance et ton Revenu Tycoon !</p>
+    <p style="font-size: 12px; color: var(--text-dim);">Touche la moto de ton choix pour courir avec.</p>
     <div id="album-zone"></div>
   </section>
 
-  <!-- SECTION 3 : TYCOON -->
-  <section id="sec-tycoon">
-    <h2>Garage Tycoon</h2>
-
-    <div class="clicker-zone" onclick="clicMécanicien(event)">
-      <div style="font-size: 32px;">🛠️</div>
-      <div style="font-family:'Teko', sans-serif; font-size: 20px; color: var(--accent-2);">RÉPARER UNE MOTO</div>
-      <div style="font-size: 12px; color: var(--text-dim);">Clique pour gagner des pièces immédiatement !</div>
-    </div>
-
-    <div style="background: var(--surface); border: 1px solid var(--line); padding: 10px; border-radius: 8px; font-size: 12px; text-align: center; margin-bottom: 12px;">
-      💡 <b>Revenu Passif Moto :</b> <b id="total-revenu-motos" style="color:var(--accent-2)">+0 🪙/s</b> apporté par tes motos améliorées !
-    </div>
-
-    <div class="tycoon-grid" id="tycoon-container">
-      <!-- Bâtiments Tycoon générés dynamiquement par JS -->
-    </div>
-  </section>
-
-  <!-- SECTION 4 : PISTE DE COURSE -->
+  <!-- SECTION 3 : PISTE DE COURSE -->
   <section id="sec-combat">
     <h2>Supercross Arena</h2>
     
@@ -935,10 +765,6 @@
       <span class="icon">📖</span>
       <span>Garage</span>
     </button>
-    <button class="nav-btn" onclick="changerOnglet('tycoon', this)">
-      <span class="icon">🏗️</span>
-      <span>Tycoon</span>
-    </button>
     <button class="nav-btn" onclick="changerOnglet('combat', this)">
       <span class="icon">🏁</span>
       <span>Course</span>
@@ -970,30 +796,15 @@
     const PRIX_BOOSTER = 50;
     const multiplicateurRarete = { normale: 1, rare: 1.15, epique: 1.3, gold: 1.5 };
 
+    // Les 2 sauts de la piste, en % de la distance totale (0 à 100)
     const zonesSaut = [
       { bonDebut: 22, bonFin: 42, parfaitDebut: 28, parfaitFin: 36 },
       { bonDebut: 58, bonFin: 80, parfaitDebut: 66, parfaitFin: 74 }
     ];
 
-    // DEFINITIONS TYCOON
-    const batimentsDef = [
-      { id: "atelier", nom: "Atelier Mécanique", icone: "🔧", basePrix: 100, baseRevenu: 2, multPrix: 1.5 },
-      { id: "lavage", nom: "Station de Lavage", icone: "🧼", basePrix: 350, baseRevenu: 8, multPrix: 1.6 },
-      { id: "piste", nom: "Piste d'Entraînement", icone: "🏜️", basePrix: 1200, baseRevenu: 25, multPrix: 1.7 },
-      { id: "showroom", nom: "Showroom VIP", icone: "🏛️", basePrix: 5000, baseRevenu: 100, multPrix: 1.8 }
-    ];
-
     let monAlbum = JSON.parse(localStorage.getItem('monAlbumMX')) || {};
-    let mesNiveauxMotos = JSON.parse(localStorage.getItem('mesNiveauxMotosMX')) || {};
     let mesPieces = parseInt(localStorage.getItem('mesPiecesMX')) || 100;
     let motoSelectionnee = localStorage.getItem('motoActiveMX') || null;
-    let monTycoon = JSON.parse(localStorage.getItem('monTycoonMX')) || {
-      atelier: 0,
-      lavage: 0,
-      piste: 0,
-      showroom: 0
-    };
-
     let courseEnCours = false;
 
     // État de course
@@ -1006,71 +817,14 @@
     let holeshotPhase = 'attente';
     let holeshotResultat = null;
 
-    // BOUCLE REVENUS PASSIFS TYCOON (Toutes les 1 seconde)
     setInterval(() => {
-      let revenu = calculRevenuPassifTotal();
-      mesPieces += revenu;
+      mesPieces += 5;
       sauvegarderEtMettreAJour();
-    }, 1000);
+    }, 5000);
 
     afficherAlbum();
     afficherMotoSelectionnee();
-    afficherTycoon();
     mettreAJourUI();
-
-    function getNiveauMoto(cleCarte) {
-      return mesNiveauxMotos[cleCarte] || 1;
-    }
-
-    function getPrixAmeliorationMoto(cleCarte) {
-      const niv = getNiveauMoto(cleCarte);
-      const [, modele, rarete] = cleCarte.split('-');
-      const pwrBase = calculPuissanceBase(modele, rarete);
-      return Math.round(pwrBase * 1.5 * Math.pow(1.6, niv - 1));
-    }
-
-    function getRevenuPassifMoto(cleCarte) {
-      const qte = monAlbum[cleCarte] || 0;
-      if (qte === 0) return 0;
-      const niv = getNiveauMoto(cleCarte);
-      const [, modele, rarete] = cleCarte.split('-');
-      const pwrBase = calculPuissanceBase(modele, rarete);
-      // Chaque niveau au-dessus de 1 ajoute du revenu passif
-      return Math.round((pwrBase / 20) * (niv - 1));
-    }
-
-    function calculRevenuPassifMotosTotal() {
-      let total = 0;
-      Object.keys(monAlbum).forEach(cle => {
-        total += getRevenuPassifMoto(cle);
-      });
-      return total;
-    }
-
-    function calculRevenuPassifTotal() {
-      let total = 1; // Gain de base
-      batimentsDef.forEach(b => {
-        const niv = monTycoon[b.id] || 0;
-        total += niv * b.baseRevenu;
-      });
-      total += calculRevenuPassifMotosTotal();
-      return total;
-    }
-
-    function ameliorerMoto(cleCarte, event) {
-      if (event) event.stopPropagation();
-      const prix = getPrixAmeliorationMoto(cleCarte);
-      if (mesPieces >= prix) {
-        mesPieces -= prix;
-        const nivActuel = getNiveauMoto(cleCarte);
-        mesNiveauxMotos[cleCarte] = nivActuel + 1;
-        sauvegarderEtMettreAJour();
-        afficherAlbum();
-        if (cleCarte === motoSelectionnee) {
-          afficherMotoSelectionnee();
-        }
-      }
-    }
 
     function getTypeCarte(marque) {
       if (marque === "Yamaha" || marque === "KTM") return "vitesse";
@@ -1099,14 +853,8 @@
       btnEl.classList.add('actif');
     }
 
-    function calculPuissanceBase(modele, rarete) {
+    function calculPuissance(modele, rarete) {
       return Math.round(parseInt(modele) * multiplicateurRarete[rarete]);
-    }
-
-    function calculPuissance(modele, rarete, cleCarte) {
-      const pwrBase = calculPuissanceBase(modele, rarete);
-      const niv = cleCarte ? getNiveauMoto(cleCarte) : 1;
-      return Math.round(pwrBase * (1 + (niv - 1) * 0.15));
     }
 
     function tirageAleatoire(tableau) {
@@ -1115,26 +863,9 @@
 
     function sauvegarderEtMettreAJour() {
       localStorage.setItem('monAlbumMX', JSON.stringify(monAlbum));
-      localStorage.setItem('mesNiveauxMotosMX', JSON.stringify(mesNiveauxMotos));
       localStorage.setItem('mesPiecesMX', mesPieces.toString());
-      localStorage.setItem('monTycoonMX', JSON.stringify(monTycoon));
       if (motoSelectionnee) localStorage.setItem('motoActiveMX', motoSelectionnee);
       mettreAJourUI();
-    }
-
-    function reinitialiserGarage() {
-      if (confirm("Réinitialiser tout le jeu (Cartes, Niveaux, Pièces et Tycoon) ?")) {
-        localStorage.clear();
-        monAlbum = {};
-        mesNiveauxMotos = {};
-        mesPieces = 100;
-        motoSelectionnee = null;
-        monTycoon = { atelier: 0, lavage: 0, piste: 0, showroom: 0 };
-        sauvegarderEtMettreAJour();
-        afficherAlbum();
-        afficherMotoSelectionnee();
-        afficherTycoon();
-      }
     }
 
     function calculerAvantageType(typeA, typeB) {
@@ -1146,68 +877,8 @@
 
     function mettreAJourUI() {
       document.getElementById('nb-pieces').innerText = mesPieces;
-      document.getElementById('revenu-passif').innerText = calculRevenuPassifTotal();
-      document.getElementById('total-revenu-motos').innerText = `+${calculRevenuPassifMotosTotal()} 🪙/s`;
       document.getElementById('btn-booster').disabled = mesPieces < PRIX_BOOSTER;
       document.getElementById('btn-lancer-combat').disabled = !motoSelectionnee || courseEnCours;
-
-      // Mettre à jour boutons Tycoon
-      batimentsDef.forEach(b => {
-        const niv = monTycoon[b.id] || 0;
-        const prix = Math.round(b.basePrix * Math.pow(b.multPrix, niv));
-        const btn = document.getElementById(`btn-up-${b.id}`);
-        if (btn) btn.disabled = mesPieces < prix;
-      });
-    }
-
-    /* LOGIQUE TYCOON */
-    function clicMécanicien(e) {
-      mesPieces += 1;
-      sauvegarderEtMettreAJour();
-      if ('vibrate' in navigator) navigator.vibrate(20);
-    }
-
-    function acheterBatiment(id) {
-      const def = batimentsDef.find(b => b.id === id);
-      const niv = monTycoon[id] || 0;
-      const prix = Math.round(def.basePrix * Math.pow(def.multPrix, niv));
-
-      if (mesPieces >= prix) {
-        mesPieces -= prix;
-        monTycoon[id] = niv + 1;
-        sauvegarderEtMettreAJour();
-        afficherTycoon();
-      }
-    }
-
-    function afficherTycoon() {
-      const container = document.getElementById('tycoon-container');
-      container.innerHTML = '';
-
-      batimentsDef.forEach(b => {
-        const niv = monTycoon[b.id] || 0;
-        const prix = Math.round(b.basePrix * Math.pow(b.multPrix, niv));
-        const gainActuel = niv * b.baseRevenu;
-        const gainSuivant = (niv + 1) * b.baseRevenu;
-
-        container.innerHTML += `
-          <div class="tycoon-item">
-            <div class="tycoon-icon">${b.icone}</div>
-            <div class="tycoon-details">
-              <div class="tycoon-title">${b.nom} (Niv. ${niv})</div>
-              <div class="tycoon-stats">
-                Génère: <b>+${gainActuel} 🪙/s</b><br>
-                Prochain niveau: +${gainSuivant} 🪙/s
-              </div>
-            </div>
-            <button id="btn-up-${b.id}" class="btn-upgrade" onclick="acheterBatiment('${b.id}')">
-              <span>AMÉLIORER</span>
-              <span style="font-size:11px;">🪙 ${prix}</span>
-            </button>
-          </div>
-        `;
-      });
-      mettreAJourUI();
     }
 
     function ouvrirBooster() {
@@ -1285,88 +956,26 @@
       }
 
       const [marque, modele, rarete] = motoSelectionnee.split('-');
-      const pwr = calculPuissance(modele, rarete, motoSelectionnee);
-      const niv = getNiveauMoto(motoSelectionnee);
+      const pwr = calculPuissance(modele, rarete);
       const imgUrl = getImageUrl(marque, modele, rarete);
       const texteAnnee = getAnneeOuEdition(modele, rarete);
       const estCarbone = (modele === "85 cc" && rarete === "gold");
       const typeMoto = getTypeCarte(marque);
-      const revPassif = getRevenuPassifMoto(motoSelectionnee);
 
       deckDiv.innerHTML = `
         <div class="carte-container retournee">
           <div class="carte-inner">
             <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
-              <div class="badge-niveau">Niv. ${niv}</div>
               <div class="marque">${marque}</div>
               <img class="carte-image" src="${imgUrl}">
               <div class="modele">${modele}</div>
               <div class="type-moto">${typeMoto}</div>
               <div class="annee">${texteAnnee}</div>
               <div class="puissance">⚡ ${pwr}</div>
-              <div class="revenu-carte">+${revPassif} 🪙/s</div>
             </div>
           </div>
         </div>
       `;
-    }
-
-    function afficherAlbum() {
-      const albumZone = document.getElementById('album-zone');
-      albumZone.innerHTML = '';
-
-      let totalPossede = 0;
-      let totalCartesExistantes = marques.length * cylindrees.length * raretes.length;
-
-      const grille = document.createElement('div');
-      grille.className = 'grille-cartes';
-
-      marques.forEach(marque => {
-        cylindrees.forEach(modele => {
-          raretes.forEach(rarete => {
-            const cle = `${marque}-${modele}-${rarete}`;
-            const qte = monAlbum[cle] || 0;
-            const estPossedee = qte > 0;
-            if (estPossedee) totalPossede++;
-
-            const estSelectionnee = (cle === motoSelectionnee);
-            const imgUrl = getImageUrl(marque, modele, rarete);
-            const texteAnnee = getAnneeOuEdition(modele, rarete);
-            const estCarbone = (modele === "85 cc" && rarete === "gold");
-            const typeMoto = getTypeCarte(marque);
-            const pwr = calculPuissance(modele, rarete, cle);
-            const niv = getNiveauMoto(cle);
-            const prixUp = getPrixAmeliorationMoto(cle);
-            const revPassif = getRevenuPassifMoto(cle);
-            const peutPayerUp = mesPieces >= prixUp;
-
-            grille.innerHTML += `
-              <div class="carte-container retournee ${!estPossedee ? 'verrouillee' : ''} ${estSelectionnee ? 'selectionnee' : ''}" 
-                   onclick="${estPossedee ? `choisirMotoUnique('${cle}')` : ''}">
-                <div class="carte-inner">
-                  <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
-                    ${qte > 1 ? `<div class="badge-compteur">${qte}</div>` : ''}
-                    ${estPossedee ? `<div class="badge-niveau">N. ${niv}</div>` : ''}
-                    <div class="marque">${marque}</div>
-                    <img class="carte-image" src="${imgUrl}">
-                    <div class="modele">${modele}</div>
-                    <div class="type-moto">${typeMoto}</div>
-                    <div class="annee">${texteAnnee}</div>
-                    <div class="puissance">⚡ ${pwr}</div>
-                    ${estPossedee ? `<div class="revenu-carte">+${revPassif} 🪙/s</div>` : ''}
-                    ${estPossedee ? `<button class="btn-up-moto" ${!peutPayerUp ? 'disabled' : ''} onclick="ameliorerMoto('${cle}', event)">UP (${prixUp}🪙)</button>` : ''}
-                  </div>
-                </div>
-              </div>
-            `;
-          });
-        });
-      });
-
-      albumZone.appendChild(grille);
-
-      document.getElementById('total-cartes').innerText = totalPossede;
-      document.getElementById('max-cartes').innerText = totalCartesExistantes;
     }
 
     // ---------- COURSE ----------
@@ -1394,16 +1003,16 @@
       const [m3, mod3, r3] = rival3.split('-');
 
       const infos = [
-        { id: 'joueur', marque: mJ, modele: modJ, rarete: rJ, cle: motoSelectionnee },
-        { id: 'ia1', marque: m1, modele: mod1, rarete: r1, cle: null },
-        { id: 'ia2', marque: m2, modele: mod2, rarete: r2, cle: null },
-        { id: 'ia3', marque: m3, modele: mod3, rarete: r3, cle: null }
+        { id: 'joueur', marque: mJ, modele: modJ, rarete: rJ },
+        { id: 'ia1', marque: m1, modele: mod1, rarete: r1 },
+        { id: 'ia2', marque: m2, modele: mod2, rarete: r2 },
+        { id: 'ia3', marque: m3, modele: mod3, rarete: r3 }
       ];
 
       const types = infos.map(inf => getTypeCarte(inf.marque));
 
       racers = infos.map((inf, i) => {
-        const pwr = calculPuissance(inf.modele, inf.rarete, inf.cle);
+        const pwr = calculPuissance(inf.modele, inf.rarete);
         let avantage = 1.0;
         types.forEach((t, j) => {
           if (j !== i) avantage = Math.max(avantage, calculerAvantageType(types[i], t));
@@ -1414,243 +1023,345 @@
           type: types[i],
           avantageType: avantage,
           pos: 0,
-          boostSautMulti: 1.0
+          boostSautMultiplicateur: 1,
+          boostSautRestant: 0,
+          zonesFranchies: zonesSaut.map(() => false),
+          wrapperEl: document.getElementById('wrapper-' + inf.id),
+          iconEl: document.getElementById('moto-' + inf.id),
+          rankEl: document.getElementById('rank-' + inf.id)
         };
       });
 
-      document.getElementById('label-ia1').innerText = `(${m1})`;
-      document.getElementById('label-ia2').innerText = `(${m2})`;
-      document.getElementById('label-ia3').innerText = `(${m3})`;
-
       racers.forEach(r => {
-        const el = document.getElementById(`wrapper-${r.id}`);
-        if (el) el.style.left = '0%';
+        r.wrapperEl.style.left = '0%';
+        r.wrapperEl.classList.remove('en-saut');
+        r.iconEl.classList.remove('en-tete');
+        r.rankEl.innerText = '-';
+        r.rankEl.classList.remove('rank-premier');
       });
+
+      document.getElementById('label-ia1').innerText = `(${racers[1].type})`;
+      document.getElementById('label-ia2').innerText = `(${racers[2].type})`;
+      document.getElementById('label-ia3').innerText = `(${racers[3].type})`;
 
       zoneIndexActuelle = 0;
       sautTente = false;
       fenetreSautOuverte = false;
-      ticksDepuisDebut = 0;
-      holeshotPhase = 'attente';
-      holeshotResultat = null;
+
+      const z = zonesSaut[0];
+      document.getElementById('jauge-zone-parfaite').style.left = z.parfaitDebut + '%';
+      document.getElementById('jauge-zone-parfaite').style.width = (z.parfaitFin - z.parfaitDebut) + '%';
+      document.getElementById('titre-saut').innerText = 'SAUT 1 — TIMING';
+      document.getElementById('curseur-saut').style.left = '0%';
+
+      const btnSaut = document.getElementById('btn-declencher-saut');
+      btnSaut.disabled = true;
+      btnSaut.classList.remove('actif');
+      btnSaut.innerText = 'PREPARE LE SAUT 1...';
+      document.getElementById('txt-feedback-saut').innerText = '';
     }
 
     function demarrerCompteRebours() {
       const overlay = document.getElementById('overlay-depart');
       const txt = document.getElementById('txt-compte-rebours');
-      const btn = document.getElementById('btn-holeshot');
+      const btnH = document.getElementById('btn-holeshot');
 
       overlay.style.display = 'flex';
-      btn.className = 'btn-holeshot';
-      btn.innerText = 'ATTENDS LE FEU VERT...';
       txt.innerText = 'PRÊT ?';
+      btnH.disabled = false;
+      btnH.classList.remove('actif', 'faux-depart');
+      btnH.innerText = 'ATTENDS LE FEU VERT...';
+      holeshotPhase = 'attente';
+      holeshotResultat = null;
 
-      let compte = 3;
-      const timer = setInterval(() => {
-        if (compte > 0) {
-          txt.innerText = compte;
-          compte--;
-        } else {
-          clearInterval(timer);
-          txt.innerText = 'GO !';
-          holeshotPhase = 'vert';
-          btn.classList.add('actif');
-          btn.innerText = 'GAZ ! (CLIQUE !)';
-
-          setTimeout(() => {
-            if (holeshotPhase === 'vert') {
-              holeshotPhase = 'ferme';
-              demarrerMouvementPiste();
-            }
-          }, 600);
-        }
-      }, 700);
+      setTimeout(() => { txt.innerText = '3'; }, 800);
+      setTimeout(() => { txt.innerText = '2'; }, 1600);
+      setTimeout(() => { txt.innerText = '1'; }, 2400);
+      setTimeout(() => {
+        txt.innerText = 'GO !';
+        holeshotPhase = 'ouvert';
+        btnH.classList.add('actif');
+        btnH.innerText = '🚀 DÉCOLLE !';
+      }, 3200);
+      setTimeout(() => {
+        if (holeshotResultat === null) holeshotResultat = 'rate';
+        holeshotPhase = 'ferme';
+        btnH.disabled = true;
+        overlay.style.display = 'none';
+        demarrerCourseReelle();
+      }, 3700);
     }
 
     function tenterHoleshot() {
-      const btn = document.getElementById('btn-holeshot');
+      if (holeshotResultat !== null) return;
+      const btnH = document.getElementById('btn-holeshot');
 
       if (holeshotPhase === 'attente') {
-        holeshotPhase = 'faux';
-        holeshotResultat = 'faux';
-        btn.classList.add('faux-depart');
-        btn.innerText = 'FAUX DÉPART ! (-20% Vitesse)';
-      } else if (holeshotPhase === 'vert') {
-        holeshotPhase = 'reussi';
+        holeshotResultat = 'faux-depart';
+        btnH.disabled = true;
+        btnH.classList.add('faux-depart');
+        btnH.innerText = '❌ FAUX DÉPART !';
+      } else if (holeshotPhase === 'ouvert') {
         holeshotResultat = 'parfait';
-        btn.innerText = 'HOLESHOT PARFAIT ! (+30% Vitesse)';
-        demarrerMouvementPiste();
+        btnH.disabled = true;
+        btnH.innerText = '🔥 HOLESHOT !';
       }
     }
 
-    function demarrerMouvementPiste() {
-      document.getElementById('overlay-depart').style.display = 'none';
+    function demarrerCourseReelle() {
+      let multiplicateurDepart = 1.0;
+      if (holeshotResultat === 'parfait') multiplicateurDepart = 1.6;
+      else if (holeshotResultat === 'faux-depart') multiplicateurDepart = 0.65;
 
-      // Appliquer bonus Holeshot Joueur
-      const j = racers.find(r => r.id === 'joueur');
-      if (holeshotResultat === 'parfait') j.boostSautMulti *= 1.3;
-      if (holeshotResultat === 'faux') j.boostSautMulti *= 0.8;
+      ticksDepuisDebut = 0;
+      document.getElementById('res-combat').innerText = '🏁 GO ! Course en cours !';
 
-      intervalCourse = setInterval(tickCourse, 100);
+      intervalCourse = setInterval(() => {
+        ticksDepuisDebut++;
+        tickCourse(multiplicateurDepart);
+      }, 90);
     }
 
-    function tickCourse() {
-      ticksDepuisDebut++;
-
-      let maxPos = 0;
-      let leaderId = '';
+    function tickCourse(multiplicateurDepart) {
+      const posMax = Math.max(...racers.map(r => r.pos));
 
       racers.forEach(r => {
-        if (r.pos < 88) {
-          const vBase = (r.pwr / 12) * r.avantageType * r.boostSautMulti;
-          const alea = (Math.random() * 0.4 + 0.8);
-          r.pos += (vBase * 0.25) * alea;
-          if (r.pos > 88) r.pos = 88;
+        let boost = 1;
+        if (r.id === 'joueur' && ticksDepuisDebut < 15) boost *= multiplicateurDepart;
+        if (r.boostSautRestant > 0) {
+          boost *= r.boostSautMultiplicateur;
+          r.boostSautRestant--;
         }
-
-        if (r.pos > maxPos) {
-          maxPos = r.pos;
-          leaderId = r.id;
-        }
-
-        const el = document.getElementById(`wrapper-${r.id}`);
-        if (el) el.style.left = `${r.pos}%`;
+        const gap = posMax - r.pos;
+        const rubberBand = Math.min(gap * 0.012, 0.35);
+        const base = (r.pwr / 450) + Math.random() * 0.4;
+        const inc = (base + rubberBand) * r.avantageType * boost;
+        r.pos = Math.min(r.pos + inc, 100);
+        r.wrapperEl.style.left = r.pos.toFixed(2) + '%';
       });
 
-      mettreAJourClassementEnTempsReel();
+      // Sauts automatiques des rivaux (IA)
+      racers.forEach(r => {
+        if (r.id === 'joueur') return;
+        zonesSaut.forEach((zone, i) => {
+          const centre = (zone.parfaitDebut + zone.parfaitFin) / 2;
+          if (!r.zonesFranchies[i] && r.pos >= centre) {
+            r.zonesFranchies[i] = true;
+            const roll = Math.random();
+            const mult = roll < 0.25 ? 1.5 : (roll < 0.8 ? 1.15 : 0.9);
+            r.boostSautMultiplicateur = mult;
+            r.boostSautRestant = 10;
+            r.wrapperEl.classList.add('en-saut');
+            setTimeout(() => r.wrapperEl.classList.remove('en-saut'), 500);
+          }
+        });
+      });
 
-      const joueur = racers.find(r => r.id === 'joueur');
-      gererModuleSaut(joueur.pos);
+      // Jauge + fenêtre de saut du joueur
+      const joueur = racers[0];
+      document.getElementById('curseur-saut').style.left = Math.min(joueur.pos, 100) + '%';
 
-      if (racers.every(r => r.pos >= 88)) {
-        clearInterval(intervalCourse);
-        finirCourse();
-      }
-    }
+      if (zoneIndexActuelle < zonesSaut.length) {
+        const z = zonesSaut[zoneIndexActuelle];
+        const btnSaut = document.getElementById('btn-declencher-saut');
 
-    function gererModuleSaut(posJoueur) {
-      if (zoneIndexActuelle >= zonesSaut.length) return;
-
-      const z = zonesSaut[zoneIndexActuelle];
-      const curseur = document.getElementById('curseur-saut');
-      const btn = document.getElementById('btn-declencher-saut');
-      const titre = document.getElementById('titre-saut');
-
-      titre.innerText = `SAUT ${zoneIndexActuelle + 1} — TIMING`;
-
-      let pctIntraZone = 0;
-      if (posJoueur >= z.bonDebut && posJoueur <= z.bonFin) {
-        pctIntraZone = ((posJoueur - z.bonDebut) / (z.bonFin - z.bonDebut)) * 100;
-        curseur.style.left = `${Math.min(96, Math.max(0, pctIntraZone))}%`;
-        fenetreSautOuverte = true;
-        btn.disabled = false;
-        btn.classList.add('actif');
-        btn.innerText = 'SAUTE !';
-      } else {
-        if (posJoueur > z.bonFin && !sautTente) {
-          evaluerSaut('rate');
+        if (joueur.pos >= z.bonDebut && joueur.pos <= z.bonFin && !sautTente) {
+          if (!fenetreSautOuverte) {
+            fenetreSautOuverte = true;
+            btnSaut.disabled = false;
+            btnSaut.classList.add('actif');
+            btnSaut.innerText = '🚀 SAUT ' + (zoneIndexActuelle + 1) + ' : APPUIE !';
+          }
+        } else if (joueur.pos > z.bonFin && !sautTente) {
+          sautTente = true;
+          const feedback = document.getElementById('txt-feedback-saut');
+          feedback.innerText = '❌ SAUT ' + (zoneIndexActuelle + 1) + ' MANQUÉ !';
+          feedback.style.color = '#ff4757';
+          passerZoneSuivante();
         }
+      }
+
+      mettreAJourClassement();
+
+      if (racers.some(r => r.pos >= 100)) {
+        clearInterval(intervalCourse);
+        terminerCourse();
       }
     }
 
     function tenterSaut() {
-      if (!fenetreSautOuverte || sautTente) return;
-
-      const joueur = racers.find(r => r.id === 'joueur');
-      const pos = joueur.pos;
-      const z = zonesSaut[zoneIndexActuelle];
-
-      if (pos >= z.parfaitDebut && pos <= z.parfaitFin) {
-        evaluerSaut('parfait');
-      } else if (pos >= z.bonDebut && pos <= z.bonFin) {
-        evaluerSaut('bon');
-      } else {
-        evaluerSaut('rate');
-      }
-    }
-
-    function evaluerSaut(qualite) {
+      if (!courseEnCours || sautTente) return;
+      if (zoneIndexActuelle >= zonesSaut.length) return;
       sautTente = true;
-      fenetreSautOuverte = false;
 
+      const joueur = racers[0];
+      const z = zonesSaut[zoneIndexActuelle];
       const btn = document.getElementById('btn-declencher-saut');
-      const fb = document.getElementById('txt-feedback-saut');
-      const jIcon = document.getElementById('moto-joueur');
-      const joueur = racers.find(r => r.id === 'joueur');
+      const feedback = document.getElementById('txt-feedback-saut');
+      const motoJ = document.getElementById('wrapper-joueur');
 
       btn.disabled = true;
       btn.classList.remove('actif');
 
-      if (qualite === 'parfait') {
-        fb.style.color = 'var(--mx-green)';
-        fb.innerText = 'SAUT PARFAIT ! 🔥 (+25% Speed)';
-        joueur.boostSautMulti *= 1.25;
-        jIcon.classList.add('en-saut');
-        setTimeout(() => jIcon.classList.remove('en-saut'), 600);
-      } else if (qualite === 'bon') {
-        fb.style.color = 'var(--accent-2)';
-        fb.innerText = 'BON SAUT ! 👍 (+10% Speed)';
-        joueur.boostSautMulti *= 1.10;
-        jIcon.classList.add('en-saut');
-        setTimeout(() => jIcon.classList.remove('en-saut'), 400);
+      let mult, msg, couleur, dureeAnim;
+      if (joueur.pos >= z.parfaitDebut && joueur.pos <= z.parfaitFin) {
+        mult = 1.8; msg = '🔥 SAUT PARFAIT ! (+80% Vitesse)'; couleur = '#20bf6b'; dureeAnim = 800;
+        if ('vibrate' in navigator) navigator.vibrate([50, 30, 80]);
+      } else if (joueur.pos >= z.bonDebut && joueur.pos <= z.bonFin) {
+        mult = 1.3; msg = '👍 BON SAUT ! (+30% Vitesse)'; couleur = '#f7b731'; dureeAnim = 600;
       } else {
-        fb.style.color = 'var(--danger)';
-        fb.innerText = 'RATER ! ❌ (-15% Speed)';
-        joueur.boostSautMulti *= 0.85;
+        mult = 0.9; msg = '❌ RATÉ / MAUVAIS TIMING !'; couleur = '#ff4757'; dureeAnim = 0;
       }
 
-      setTimeout(() => {
-        zoneIndexActuelle++;
-        sautTente = false;
-        btn.innerText = `PREPARE LE SAUT ${zoneIndexActuelle + 1}...`;
-      }, 1000);
+      joueur.boostSautMultiplicateur = mult;
+      joueur.boostSautRestant = 14;
+      feedback.innerText = msg;
+      feedback.style.color = couleur;
+
+      if (dureeAnim > 0) {
+        motoJ.classList.add('en-saut');
+        setTimeout(() => motoJ.classList.remove('en-saut'), dureeAnim);
+      }
+
+      passerZoneSuivante();
     }
 
-    function mettreAJourClassementEnTempsReel() {
-      const tri = [...racers].sort((a, b) => b.pos - a.pos);
-      tri.forEach((r, idx) => {
-        const badge = document.getElementById(`rank-${r.id}`);
-        if (badge) {
-          badge.innerText = idx + 1;
-          if (idx === 0) badge.classList.add('rank-premier');
-          else badge.classList.remove('rank-premier');
-        }
+    function passerZoneSuivante() {
+      zoneIndexActuelle++;
+      sautTente = false;
+      fenetreSautOuverte = false;
 
-        const icon = document.getElementById(`moto-${r.id}`);
-        if (icon) {
-          if (idx === 0) icon.classList.add('en-tete');
-          else icon.classList.remove('en-tete');
-        }
+      const btnSaut = document.getElementById('btn-declencher-saut');
+      const gaugeZone = document.getElementById('jauge-zone-parfaite');
+      const titre = document.getElementById('titre-saut');
+
+      if (zoneIndexActuelle < zonesSaut.length) {
+        const z = zonesSaut[zoneIndexActuelle];
+        gaugeZone.style.left = z.parfaitDebut + '%';
+        gaugeZone.style.width = (z.parfaitFin - z.parfaitDebut) + '%';
+        titre.innerText = 'SAUT ' + (zoneIndexActuelle + 1) + ' — TIMING';
+        btnSaut.disabled = true;
+        btnSaut.classList.remove('actif');
+        btnSaut.innerText = 'PREPARE LE SAUT ' + (zoneIndexActuelle + 1) + '...';
+      } else {
+        titre.innerText = 'PLUS DE SAUT — FONCE !';
+        btnSaut.disabled = true;
+        btnSaut.classList.remove('actif');
+        btnSaut.innerText = 'DERNIÈRE LIGNE DROITE !';
+      }
+    }
+
+    function mettreAJourClassement() {
+      const classement = [...racers].sort((a, b) => b.pos - a.pos);
+      const suffixes = ['1er', '2e', '3e', '4e'];
+      classement.forEach((r, i) => {
+        r.rankEl.innerText = suffixes[i];
+        r.rankEl.classList.toggle('rank-premier', i === 0);
+        r.iconEl.classList.toggle('en-tete', i === 0);
       });
     }
 
-    function finirCourse() {
+    function terminerCourse() {
       courseEnCours = false;
-      const tri = [...racers].sort((a, b) => b.pos - a.pos);
-      const posJoueur = tri.findIndex(r => r.id === 'joueur') + 1;
 
-      const resDiv = document.getElementById('panneau-resultats');
+      const classement = [...racers].sort((a, b) => b.pos - a.pos);
+      const noms = { joueur: 'Toi', ia1: 'Rival 1', ia2: 'Rival 2', ia3: 'Rival 3' };
+      const gains = [120, 70, 30, 10];
+      const placeJoueur = classement.findIndex(r => r.id === 'joueur');
+      const coinsGagnes = gains[placeJoueur];
+      mesPieces += coinsGagnes;
+
+      const messages = [
+        '🏆 VICTOIRE ! Tu domines la course !',
+        '🥈 Belle 2ème place !',
+        '🥉 3ème place, pas mal du tout !',
+        '😤 4ème... la revanche au prochain départ !'
+      ];
+      document.getElementById('res-combat').innerText = `${messages[placeJoueur]} (+${coinsGagnes} 🪙)`;
+
       const liste = document.getElementById('liste-resultats');
-      liste.innerHTML = '';
+      liste.innerHTML = classement.map(r =>
+        `<li>${noms[r.id]}${r.id === 'joueur' ? ' (toi)' : ''} — ${r.pos.toFixed(0)}%</li>`
+      ).join('');
+      document.getElementById('panneau-resultats').style.display = 'block';
 
-      let gains = 0;
-      if (posJoueur === 1) gains = 150;
-      else if (posJoueur === 2) gains = 80;
-      else if (posJoueur === 3) gains = 40;
-      else gains = 10;
-
-      mesPieces += gains;
-
-      tri.forEach((r, i) => {
-        let nom = (r.id === 'joueur') ? 'Toi' : `Rival ${r.id.replace('ia', '')}`;
-        liste.innerHTML += `<li><b>${i + 1}e</b> : ${nom} (Pwr: ${r.pwr})</li>`;
-      });
-
-      document.getElementById('res-combat').innerText = `Course terminée ! Tu finis ${posJoueur}e et gagnes ${gains} 🪙 !`;
-      resDiv.style.display = 'block';
+      const btnSaut = document.getElementById('btn-declencher-saut');
+      btnSaut.disabled = true;
+      btnSaut.classList.remove('actif');
+      btnSaut.innerText = 'COURSE TERMINÉE';
 
       sauvegarderEtMettreAJour();
     }
+
+    // ---------- ALBUM ----------
+
+    function afficherAlbum() {
+      const albumZone = document.getElementById('album-zone');
+      albumZone.innerHTML = '';
+
+      let cartesDebloquees = 0;
+      let totalCombinaisons = marques.length * cylindrees.length * raretes.length;
+
+      marques.forEach(marque => {
+        let section = document.createElement('div');
+        const typeM = getTypeCarte(marque);
+        section.innerHTML = `<h3 style="color:#f2b705; margin: 15px 0 5px 0; font-size:16px;">${marque} <span style="font-size:11px; color:#a99a86; font-weight:600;">(${typeM})</span></h3>`;
+        let grille = document.createElement('div');
+        grille.className = 'grille-cartes';
+
+        cylindrees.forEach(modele => {
+          raretes.forEach(rarete => {
+            const cle = `${marque}-${modele}-${rarete}`;
+            const imgUrl = getImageUrl(marque, modele, rarete);
+            const quantite = monAlbum[cle] || 0;
+            const possedee = quantite > 0;
+            const estSelectionnee = (motoSelectionnee === cle);
+            const pwr = calculPuissance(modele, rarete);
+            const texteAnnee = getAnneeOuEdition(modele, rarete);
+            const estCarbone = (modele === "85 cc" && rarete === "gold");
+
+            if (possedee) cartesDebloquees++;
+
+            grille.innerHTML += `
+              <div class="carte-container retournee ${possedee ? '' : 'verrouillee'} ${estSelectionnee ? 'selectionnee' : ''}" 
+                   onclick="${possedee ? `choisirMotoUnique('${cle}')` : ''}">
+                <div class="carte-inner">
+                  <div class="carte-front ${possedee ? rarete : ''} ${possedee && estCarbone ? 'carbone-bg' : ''}">
+                    ${quantite > 1 ? `<div class="badge-compteur">x${quantite}</div>` : ''}
+                    <div class="marque">${marque}</div>
+                    <img class="carte-image" src="${imgUrl}">
+                    <div class="modele">${modele}</div>
+                    <div class="type-moto">${possedee ? typeM : ''}</div>
+                    <div class="annee">${possedee ? texteAnnee : '----'}</div>
+                    <div class="puissance">${possedee ? `⚡ ${pwr}` : ''}</div>
+                    <div class="rarete">${possedee ? rarete : '🔒'}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        });
+
+        section.appendChild(grille);
+        albumZone.appendChild(section);
+      });
+
+      document.getElementById('total-cartes').innerText = cartesDebloquees;
+      document.getElementById('max-cartes').innerText = totalCombinaisons;
+    }
+
+    function reinitialiserGarage() {
+      if (confirm("Réinitialiser l'album, la moto et les pièces ?")) {
+        monAlbum = {};
+        mesPieces = 100;
+        motoSelectionnee = null;
+        localStorage.clear();
+        afficherMotoSelectionnee();
+        sauvegarderEtMettreAJour();
+        afficherAlbum();
+      }
+    }
   </script>
+
 </body>
 </html>
