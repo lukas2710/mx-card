@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+  <title>MX Card Collector</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0 0 70px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: #1e1e1e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #333;
+    }
+
+    .logo { font-size: 18px; font-weight: bold; color: #ff4757; }
+    .pieces-compteur {
+      font-size: 16px;
+      font-weight: bold;
+      color: #f7b731;
+      background: #2a2a2a;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: #1e1e1e;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #333;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      width: 33%;
+      padding: 8px 0;
+    }
+
+    .nav-btn .icon { font-size: 18px; }
+    .nav-btn.actif { color: #ff4757; }
+
+    section { width: 100%; padding: 15px; display: none; }
+    section.actif { display: block; }
+
+    h2 { font-size: 18px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 8px; }
+
+    .btn-action {
+      width: 100%;
+      background-color: #ff4757;
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+
+    .btn-action:disabled { background-color: #4b6584; }
+    .btn-reset { background-color: #333; color: #ff4757; font-size: 12px; padding: 8px 12px; width: auto; }
+
+    .grille-cartes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .carte-container {
+      perspective: 1000px;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+    }
+
+    .carte-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .carte-container.retournee .carte-inner {
+      transform: rotateY(180deg);
+    }
+
+    .carte-front, .carte-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-sizing: border-box;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid #fff;
+    }
+
+    .carte-back {
+      background: linear-gradient(135deg, #1e272e, #485460);
+      border-color: #ff4757;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+    }
+
+    .carte-back-logo {
+      font-size: 24px;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .carte-front { transform: rotateY(180deg); }
+
+    .carte-image {
+      width: 100%;
+      height: 48%;
+      border-radius: 4px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .carte-container.verrouillee .carte-front {
+      background: #222 !important;
+      border-color: #444 !important;
+      opacity: 0.3;
+    }
+
+    .carte-container.selectionnee .carte-front {
+      border-color: #00d2d3 !important;
+      box-shadow: 0 0 10px #00d2d3 !important;
+    }
+
+    .normale { background: #4b6584; }
+    .rare { background: #20bf6b; }
+    .epique { background: #8854d0; }
+    .gold { 
+      background: linear-gradient(135deg, #f7b731, #fa8231); 
+      border-color: #ffeaa7; 
+      box-shadow: 0 0 12px rgba(247, 183, 49, 0.6);
+    }
+
+    .marque { font-size: 9px; text-transform: uppercase; font-weight: bold; }
+    .modele { font-size: 12px; font-weight: bold; text-align: center; }
+    .puissance { font-size: 10px; font-weight: bold; text-align: center; color: #ffeaa7; }
+    .rarete { font-size: 8px; text-align: right; text-transform: uppercase; }
+
+    .badge-compteur {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff4757;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #fff;
+      z-index: 10;
+    }
+
+    .plateau-combat {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #1e1e1e;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .camp h3 { font-size: 14px; margin: 0 0 8px 0; }
+    #res-combat { font-size: 15px; font-weight: bold; color: #f7b731; text-align: center; margin-bottom: 10px; }
+
+    .synergie-box {
+      background: #2d3436;
+      border: 1px solid #00d2d3;
+      color: #00d2d3;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🏍️ MX Collector</div>
+    <div class="pieces-compteur">🪙 <span id="nb-pieces">100</span></div>
+  </header>
+
+  <!-- SECTION 1 : BOUTIQUE -->
+  <section id="sec-boutique" class="actif">
+    <h2>Boutique</h2>
+    <button id="btn-booster" class="btn-action" onclick="ouvrirBooster()">Ouvrir Booster (50 🪙)</button>
+    <p id="indication-booster" style="font-size: 12px; color: #aaa; display: none; text-align: center;">Touche les cartes pour les révéler !</p>
+    <div id="booster-zone" class="grille-cartes"></div>
+  </section>
+
+  <!-- SECTION 2 : GARAGE / ALBUM -->
+  <section id="sec-album">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Garage (<span id="total-cartes">0</span>/<span id="max-cartes">0</span>)</h2>
+      <button class="btn-action btn-reset" onclick="reinitialiserGarage()">Reset</button>
+    </div>
+    <p style="font-size: 12px; color: #aaa;">Touche une carte pour l'ajouter/retirer de ton deck (3 max).</p>
+    <div id="album-zone"></div>
+  </section>
+
+  <!-- SECTION 3 : ARENE DE COMBAT -->
+  <section id="sec-combat">
+    <h2>Arène de Combat</h2>
+    <div id="res-combat">Sélectionne 3 cartes dans ton Garage !</div>
+    <div id="synergie-info" class="synergie-box">⚡ Synergie Constructeur (+15% puissance) !</div>
+
+    <div class="plateau-combat">
+      <div class="camp">
+        <h3>Ton Deck (<span id="count-deck">0</span>/3)</h3>
+        <div id="mon-deck" class="grille-cartes"></div>
+      </div>
+      <div class="camp">
+        <h3>Adversaire</h3>
+        <div id="deck-ia" class="grille-cartes"></div>
+      </div>
+    </div>
+
+    <button id="btn-lancer-combat" class="btn-action" onclick="lancerCombat()" disabled>LANCER LE COMBAT</button>
+  </section>
+
+  <nav>
+    <button class="nav-btn actif" onclick="changerOnglet('boutique', this)">
+      <span class="icon">🛍️</span>
+      <span>Boutique</span>
+    </button>
+    <button class="nav-btn" onclick="changerOnglet('album', this)">
+      <span class="icon">📖</span>
+      <span>Garage</span>
+    </button>
+    <button class="nav-btn" onclick="changerOnglet('combat', this)">
+      <span class="icon">⚔️</span>
+      <span>Combat</span>
+    </button>
+  </nav>
+
+  <script>
+    // =========================================================================
+    // 🖼️ LISTE DES IMAGES DE VOS MOTOS
+    // Remplacez les liens entre guillemets par vos propres liens d'images (.jpg, .png, etc.)
+    // =========================================================================
+    const imagesMotos = {
+      // YAMAHA
+      "Yamaha-85 cc": "https://cdn2.yamaha-motor.eu/prod/product-assets/2027/YZ85LW/2027-Yamaha-YZ85LW-EU-Icon_Blue-Studio-001-03.jpg",
+      "Yamaha-125 cc": "https://cdn2.yamaha-motor.eu/prod/product-assets/2027/YZ125LC/2027-Yamaha-YZ125LC-EU-Icon_Blue-Studio-002-03.jpg",
+      "Yamaha-250 cc": "https://motocrossactionmag.com/wp-content/uploads/2021/07/2022-YAMAHA-YZ250-TWO-STROKE-2.jpg",
+      "Yamaha-450 cc": "https://motocrossactionmag.com/wp-content/uploads/2023/02/YZ450-front-angle.jpg",
+
+      // HONDA
+      "Honda-85 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "Honda-125 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Honda-250 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Honda-450 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+
+      // KAWASAKI
+      "Kawasaki-85 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Kawasaki-125 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Kawasaki-250 cc": "https://images.unsplash.com/photo-1558981806-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Kawasaki-450 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+
+      // KTM
+      "KTM-85 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "KTM-125 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "KTM-250 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "KTM-450 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+
+      // HUSQVARNA
+      "Husqvarna-85 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Husqvarna-125 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "Husqvarna-250 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Husqvarna-450 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80"
+    };
+
+    // Image par défaut au cas où un lien manque
+    const IMAGE_DEFAUT = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80";
+
+    const marques = ["Yamaha", "Honda", "Kawasaki", "KTM", "Husqvarna"];
+    const cylindrees = ["85 cc", "125 cc", "250 cc", "450 cc"];
+    const raretes = ["normale", "rare", "epique", "gold"];
+    const PRIX_BOOSTER = 50;
+    const multiplicateurRarete = { normale: 1, rare: 1.2, epique: 1.5, gold: 2 };
+
+    let monAlbum = JSON.parse(localStorage.getItem('monAlbumMX')) || {};
+    let mesPieces = parseInt(localStorage.getItem('mesPiecesMX')) || 100;
+    let monDeck = [];
+
+    setInterval(() => {
+      mesPieces += 5;
+      sauvegarderEtMettreAJour();
+    }, 5000);
+
+    afficherAlbum();
+    mettreAJourUI();
+
+    function getImageUrl(marque, modele) {
+      const cle = `${marque}-${modele}`;
+      return imagesMotos[cle] || IMAGE_DEFAUT;
+    }
+
+    function changerOnglet(nomOnglet, btnEl) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('actif'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('actif'));
+
+      document.getElementById(`sec-${nomOnglet}`).classList.add('actif');
+      btnEl.classList.add('actif');
+    }
+
+    function calculPuissance(modele, rarete) {
+      return Math.round(parseInt(modele) * multiplicateurRarete[rarete]);
+    }
+
+    function tirageAleatoire(tableau) {
+      return tableau[Math.floor(Math.random() * tableau.length)];
+    }
+
+    function sauvegarderEtMettreAJour() {
+      localStorage.setItem('monAlbumMX', JSON.stringify(monAlbum));
+      localStorage.setItem('mesPiecesMX', mesPieces.toString());
+      mettreAJourUI();
+    }
+
+    function verifierSynergie() {
+      if (monDeck.length < 3) return false;
+      const marque1 = monDeck[0].split('-')[0];
+      const marque2 = monDeck[1].split('-')[0];
+      const marque3 = monDeck[2].split('-')[0];
+
+      return (marque1 === marque2 && marque2 === marque3);
+    }
+
+    function mettreAJourUI() {
+      document.getElementById('nb-pieces').innerText = mesPieces;
+      document.getElementById('btn-booster').disabled = mesPieces < PRIX_BOOSTER;
+      document.getElementById('count-deck').innerText = monDeck.length;
+      document.getElementById('btn-lancer-combat').disabled = monDeck.length < 3;
+
+      const synergieBox = document.getElementById('synergie-info');
+      if (verifierSynergie()) {
+        synergieBox.style.display = 'block';
+      } else {
+        synergieBox.style.display = 'none';
+      }
+    }
+
+    function ouvrirBooster() {
+      if (mesPieces < PRIX_BOOSTER) return;
+      mesPieces -= PRIX_BOOSTER;
+
+      const boosterZone = document.getElementById('booster-zone');
+      const indication = document.getElementById('indication-booster');
+      boosterZone.innerHTML = '';
+      indication.style.display = 'block';
+
+      for (let i = 0; i < 3; i++) {
+        const marque = tirageAleatoire(marques);
+        const modele = tirageAleatoire(cylindrees);
+        const rarete = tirageAleatoire(raretes);
+        const cle = `${marque}-${modele}-${rarete}`;
+        const imgUrl = getImageUrl(marque, modele);
+
+        monAlbum[cle] = (monAlbum[cle] || 0) + 1;
+
+        boosterZone.innerHTML += `
+          <div class="carte-container" onclick="revelerCarte(this)">
+            <div class="carte-inner">
+              <div class="carte-back">
+                <div class="carte-back-logo">🏁</div>
+              </div>
+              <div class="carte-front ${rarete}">
+                <div class="marque">${marque}</div>
+                <img class="carte-image" src="${imgUrl}">
+                <div class="modele">${modele}</div>
+                <div class="rarete">${rarete}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      sauvegarderEtMettreAJour();
+      afficherAlbum();
+    }
+
+    function revelerCarte(elContainer) {
+      if (!elContainer.classList.contains('retournee')) {
+        elContainer.classList.add('retournee');
+        if ('vibrate' in navigator) navigator.vibrate(40);
+      }
+    }
+
+    function basculerCarteDeck(cleCarte) {
+      const index = monDeck.indexOf(cleCarte);
+      if (index > -1) {
+        monDeck.splice(index, 1);
+      } else {
+        if (monDeck.length < 3) {
+          monDeck.push(cleCarte);
+        } else {
+          alert("Deck plein (3 cartes max).");
+        }
+      }
+      afficherDeckJoueur();
+      afficherAlbum();
+      mettreAJourUI();
+    }
+
+    function afficherDeckJoueur() {
+      const deckDiv = document.getElementById('mon-deck');
+      deckDiv.innerHTML = '';
+      const synergieActive = verifierSynergie();
+
+      monDeck.forEach(cle => {
+        const [marque, modele, rarete] = cle.split('-');
+        let pwr = calculPuissance(modele, rarete);
+        if (synergieActive) pwr = Math.round(pwr * 1.15);
+
+        const imgUrl = getImageUrl(marque, modele);
+
+        deckDiv.innerHTML += `
+          <div class="carte-container retournee" onclick="basculerCarteDeck('${cle}')">
+            <div class="carte-inner">
+              <div class="carte-front ${rarete}">
+                <div class="marque">${marque}</div>
+                <img class="carte-image" src="${imgUrl}">
+                <div class="modele">${modele}</div>
+                <div class="puissance">⚡ ${pwr}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function lancerCombat() {
+      if (monDeck.length < 3) return;
+
+      const deckIA = [];
+      for (let i = 0; i < 3; i++) {
+        deckIA.push({
+          marque: tirageAleatoire(marques),
+          modele: tirageAleatoire(cylindrees),
+          rarete: tirageAleatoire(raretes)
+        });
+      }
+
+      const deckIADiv = document.getElementById('deck-ia');
+      deckIADiv.innerHTML = '';
+      
+      let victoiresJ = 0, victoiresIA = 0;
+      const synergieActive = verifierSynergie();
+
+      monDeck.forEach((cleJoueur, i) => {
+        const [marqueJ, modeleJ, rareteJ] = cleJoueur.split('-');
+        let pwrJ = calculPuissance(modeleJ, rareteJ);
+        if (synergieActive) pwrJ = Math.round(pwrJ * 1.15);
+
+        const carteIA = deckIA[i];
+        const pwrIA = calculPuissance(carteIA.modele, carteIA.rarete);
+        const imgUrlIA = getImageUrl(carteIA.marque, carteIA.modele);
+
+        if (pwrJ > pwrIA) victoiresJ++;
+        else if (pwrIA > pwrJ) victoiresIA++;
+
+        deckIADiv.innerHTML += `
+          <div class="carte-container retournee">
+            <div class="carte-inner">
+              <div class="carte-front ${carteIA.rarete}">
+                <div class="marque">${carteIA.marque}</div>
+                <img class="carte-image" src="${imgUrlIA}">
+                <div class="modele">${modele}</div>
+                <div class="puissance">⚡ ${pwrIA}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      const resDiv = document.getElementById('res-combat');
+      if (victoiresJ > victoiresIA) {
+        mesPieces += 100;
+        resDiv.innerText = `VICTOIRE ! (${victoiresJ}-${victoiresIA}) +100 🪙`;
+      } else if (victoiresIA > victoiresJ) {
+        resDiv.innerText = `DÉFAITE... (${victoiresJ}-${victoiresIA})`;
+      } else {
+        mesPieces += 25;
+        resDiv.innerText = `ÉGALITÉ ! (${victoiresJ}-${victoiresIA}) +25 🪙`;
+      }
+
+      sauvegarderEtMettreAJour();
+    }
+
+    function afficherAlbum() {
+      const albumZone = document.getElementById('album-zone');
+      albumZone.innerHTML = '';
+
+      let cartesDebloquees = 0;
+      let totalCombinaisons = marques.length * cylindrees.length * raretes.length;
+
+      marques.forEach(marque => {
+        let section = document.createElement('div');
+        section.innerHTML = `<h3 style="color:#ffeaa7; margin: 15px 0 5px 0; font-size:14px;">${marque}</h3>`;
+        let grille = document.createElement('div');
+        grille.className = 'grille-cartes';
+
+        cylindrees.forEach(modele => {
+          raretes.forEach(rarete => {
+            const cle = `${marque}-${modele}-${rarete}`;
+            const imgUrl = getImageUrl(marque, modele);
+            const quantite = monAlbum[cle] || 0;
+            const possedee = quantite > 0;
+            const estDansDeck = monDeck.includes(cle);
+            const pwr = calculPuissance(modele, rarete);
+
+            if (possedee) cartesDebloquees++;
+
+            grille.innerHTML += `
+              <div class="carte-container retournee ${possedee ? '' : 'verrouillee'} ${estDansDeck ? 'selectionnee' : ''}" 
+                   onclick="${possedee ? `basculerCarteDeck('${cle}')` : ''}">
+                <div class="carte-inner">
+                  <div class="carte-front ${possedee ? rarete : ''}">
+                    ${quantite > 1 ? `<div class="badge-compteur">x${quantite}</div>` : ''}
+                    <div class="marque">${marque}</div>
+                    <img class="carte-image" src="${imgUrl}">
+                    <div class="modele">${modele}</div>
+                    <div class="puissance">${possedee ? `⚡ ${pwr}` : ''}</div>
+                    <div class="rarete">${possedee ? rarete : '🔒'}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        });
+
+        section.appendChild(grille);
+        albumZone.appendChild(section);
+      });
+
+      document.getElementById('total-cartes').innerText = cartesDebloquees;
+      document.getElementById('max-cartes').innerText = totalCombinaisons;
+    }
+
+    function reinitialiserGarage() {
+      if (confirm("Réinitialiser l'album et les pièces ?")) {
+        monAlbum = {};
+        mesPieces = 100;
+        monDeck = [];
+        localStorage.clear();
+        afficherDeckJoueur();
+        sauvegarderEtMettreAJour();
+        afficherAlbum();
+      }
+    }
+  </script>
+
+</body>
+</html>
