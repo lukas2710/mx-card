@@ -3,27 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
-  <title>MX Card Collector</title>
+  <title>MX Card Collector & Tycoon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
 
+    :root {
+      --bg: #17130f;
+      --surface: #221b14;
+      --surface-2: #2b2119;
+      --line: #3d3025;
+      --text: #f2ead9;
+      --text-dim: #a99a86;
+      --accent: #e2540c;
+      --accent-dim: #7a3410;
+      --accent-2: #f2b705;
+      --steel: #56707d;
+      --mx-green: #2f9e44;
+      --mx-violet: #7048c9;
+      --danger: #e0473f;
+    }
+
     body {
-      background-color: #121212;
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 8%, rgba(226,84,12,0.07), transparent 45%),
+        radial-gradient(circle at 85% 92%, rgba(242,183,5,0.05), transparent 45%);
+      color: var(--text);
+      font-family: 'Rajdhani', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 600;
+      font-size: 15px;
       margin: 0;
-      padding: 0 0 70px 0;
+      padding: 0 0 74px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
 
     header {
       width: 100%;
-      background: #1e1e1e;
+      background: linear-gradient(180deg, #241c14, #1a140e);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -31,17 +56,50 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid #333;
+      border-bottom: 3px solid var(--accent);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.45);
     }
 
-    .logo { font-size: 18px; font-weight: bold; color: #ff4757; }
+    .logo {
+      font-family: 'Teko', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text);
+      line-height: 1;
+      transform: skewX(-4deg);
+      display: inline-block;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 8px;
+    }
+
     .pieces-compteur {
+      font-family: 'Rajdhani', sans-serif;
       font-size: 16px;
-      font-weight: bold;
-      color: #f7b731;
-      background: #2a2a2a;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #1a140e;
+      background: linear-gradient(180deg, #ffce3d, var(--accent-2));
       padding: 6px 12px;
-      border-radius: 20px;
+      border-radius: 6px;
+      border: 1px solid #d99e00;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .income-compteur {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--surface-2);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
     }
 
     nav {
@@ -49,71 +107,109 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 60px;
-      background: #1e1e1e;
+      height: 62px;
+      background: #1a140e;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      border-top: 1px solid #333;
+      border-top: 1px solid var(--line);
       z-index: 100;
+      box-shadow: 0 -4px 14px rgba(0,0,0,0.4);
     }
 
     .nav-btn {
       background: none;
       border: none;
-      color: #888;
+      border-top: 3px solid transparent;
+      color: var(--text-dim);
+      font-family: 'Rajdhani', sans-serif;
       font-size: 11px;
-      font-weight: bold;
+      font-weight: 700;
+      letter-spacing: 0.5px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      justify-content: center;
+      gap: 2px;
       cursor: pointer;
-      width: 33%;
-      padding: 8px 0;
+      width: 25%;
+      height: 100%;
+      padding: 6px 0 4px 0;
+      transition: color 0.15s ease;
     }
 
-    .nav-btn .icon { font-size: 18px; }
-    .nav-btn.actif { color: #ff4757; }
+    .nav-btn .icon { font-size: 18px; filter: grayscale(0.6); transition: filter 0.15s ease; }
+    .nav-btn.actif { color: var(--accent-2); border-top-color: var(--accent); }
+    .nav-btn.actif .icon { filter: none; }
 
-    section { width: 100%; padding: 15px; display: none; }
+    section { width: 100%; max-width: 640px; padding: 14px 15px; display: none; }
     section.actif { display: block; }
 
-    h2 { font-size: 18px; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 8px; }
+    h2 {
+      font-family: 'Teko', sans-serif;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin: 0 0 10px 0;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 8px;
+      color: var(--text);
+    }
+
+    h3 {
+      font-family: 'Teko', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 10px 0 6px 0;
+    }
 
     .btn-action {
       width: 100%;
-      background-color: #ff4757;
-      color: white;
+      background: linear-gradient(180deg, #f0631a, var(--accent));
+      color: #1a140e;
       border: none;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 12px;
+      border-bottom: 3px solid var(--accent-dim);
+      padding: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      border-radius: 8px;
       cursor: pointer;
       margin: 10px 0;
-      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
     }
 
-    .btn-action:disabled { background-color: #4b6584; box-shadow: none; }
-    .btn-reset { background-color: #333; color: #ff4757; font-size: 12px; padding: 8px 12px; width: auto; }
+    .btn-action:active { transform: translateY(1px); border-bottom-width: 2px; }
+    .btn-action:disabled { background: #3a3128; color: var(--text-dim); border-bottom-color: #2a2319; cursor: not-allowed; }
+    
+    .btn-reset {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      width: auto;
+      border-radius: 6px;
+    }
 
     .taux-booster {
-      background: #1e1e1e;
-      border: 1px solid #333;
+      background: var(--surface);
+      border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 10px;
+      padding: 10px 4px;
       margin-bottom: 10px;
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: 700;
       display: flex;
       justify-content: space-around;
       text-align: center;
     }
-    .taux-item { font-weight: bold; }
-    .taux-normale { color: #4b6584; }
-    .taux-rare { color: #20bf6b; }
-    .taux-epique { color: #8854d0; }
-    .taux-gold { color: #f7b731; }
+    .taux-normale { color: var(--steel); }
+    .taux-rare { color: var(--mx-green); }
+    .taux-epique { color: #9b7bef; }
+    .taux-gold { color: var(--accent-2); }
 
     .grille-cartes {
       display: grid;
@@ -125,7 +221,7 @@
     .carte-container {
       perspective: 1000px;
       width: 100%;
-      aspect-ratio: 2 / 3;
+      aspect-ratio: 2 / 3.2;
     }
 
     .carte-inner {
@@ -148,18 +244,20 @@
       height: 100%;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      border-radius: 8px;
+      border-radius: 7px;
       box-sizing: border-box;
       padding: 6px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 2px solid #fff;
+      border: 2px solid rgba(255,255,255,0.7);
     }
 
     .carte-back {
-      background: linear-gradient(135deg, #1e272e, #485460);
-      border-color: #ff4757;
+      background:
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.25) 0 8px, rgba(0,0,0,0.05) 8px 16px),
+        linear-gradient(135deg, #2b2119, #17130f);
+      border-color: var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -180,115 +278,166 @@
 
     .carte-image {
       width: 100%;
-      height: 42%;
+      height: 38%;
       border-radius: 4px;
       object-fit: cover;
       background: #000;
     }
 
     .carte-container.verrouillee .carte-front {
-      background: #222 !important;
-      border-color: #444 !important;
-      opacity: 0.3;
+      background: #211a14 !important;
+      border-color: #3a3025 !important;
+      opacity: 0.35;
     }
 
     .carte-container.selectionnee .carte-front {
-      border-color: #00d2d3 !important;
-      box-shadow: 0 0 10px #00d2d3 !important;
+      border-color: var(--accent-2) !important;
+      box-shadow: 0 0 10px rgba(242,183,5,0.7) !important;
     }
 
     /* Raretés */
-    .normale { background: #4b6584; }
-    .rare { background: #20bf6b; }
-    .epique { background: #8854d0; }
-    .gold { 
-      background: linear-gradient(135deg, #f7b731, #fa8231); 
-      border-color: #ffeaa7; 
-      box-shadow: 0 0 12px rgba(247, 183, 49, 0.6);
+    .normale { background: linear-gradient(160deg, #5c7684, var(--steel)); }
+    .rare { background: linear-gradient(160deg, #38b558, var(--mx-green)); }
+    .epique { background: linear-gradient(160deg, #8f63e8, var(--mx-violet)); }
+    .gold {
+      background: linear-gradient(150deg, #ffd854, #e2820c);
+      border-color: #fff1c2;
+      box-shadow: 0 0 12px rgba(242, 183, 5, 0.6);
     }
 
     .carbone-bg {
-      background: 
-        radial-gradient(black 15%, transparent 16%) 0 0,
-        radial-gradient(black 15%, transparent 16%) 8px 8px,
-        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px !important;
-      background-color: #111 !important;
-      background-size: 16px 16px !important;
-      border-color: #f7b731 !important; 
-      box-shadow: 0 0 12px rgba(247, 183, 49, 0.8) !important;
+      background:
+        repeating-linear-gradient(45deg, #000 0 4px, #161616 4px 8px) !important;
+      border-color: var(--accent-2) !important;
+      box-shadow: 0 0 12px rgba(242, 183, 5, 0.8) !important;
     }
 
-    .marque { font-size: 9px; text-transform: uppercase; font-weight: bold; }
-    .modele { font-size: 11px; font-weight: bold; text-align: center; }
-    .annee { font-size: 8px; text-align: center; color: #d1d8e0; font-weight: bold; }
-    .carbone-bg .annee { color: #f7b731; text-transform: uppercase; letter-spacing: 0.5px; }
-    .puissance { font-size: 9px; font-weight: bold; text-align: center; color: #ffeaa7; }
-    .type-moto { font-size: 8px; text-align: center; font-weight: bold; color: #00d2d3; text-transform: uppercase; }
-    .rarete { font-size: 8px; text-align: right; text-transform: uppercase; }
+    .marque { font-size: 9px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.3px; }
+    .modele { font-family: 'Teko', sans-serif; font-size: 15px; font-weight: 600; text-align: center; letter-spacing: 0.3px; }
+    .annee { font-size: 8px; text-align: center; color: #e9e2d2; font-weight: 700; }
+    .carbone-bg .annee { color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.5px; }
+    .puissance { font-family: 'Rajdhani', sans-serif; font-size: 10px; font-weight: 700; text-align: center; color: #fff2c4; }
+    .revenu-carte { font-size: 9px; text-align: center; color: var(--accent-2); font-weight: 800; background: rgba(0,0,0,0.3); border-radius: 3px; padding: 1px 0; }
+    .type-moto { font-size: 8px; text-align: center; font-weight: 700; color: #17130f; background: rgba(255,255,255,0.55); border-radius: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .rarete { font-size: 8px; text-align: right; text-transform: uppercase; opacity: 0.85; }
 
     .badge-compteur {
       position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #ff4757;
-      color: white;
-      font-size: 10px;
-      font-weight: bold;
+      top: -6px;
+      right: -6px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
       border-radius: 50%;
-      width: 18px;
-      height: 18px;
+      width: 19px;
+      height: 19px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #fff;
+      border: 2px solid #1a140e;
+      z-index: 10;
+    }
+
+    .badge-niveau {
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      background: #111;
+      color: var(--accent-2);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      border-radius: 4px;
+      padding: 1px 4px;
+      border: 1px solid var(--accent-2);
       z-index: 10;
     }
 
     .badge-new {
       position: absolute;
-      top: -5px;
-      left: -5px;
-      background: #00d2d3;
-      color: #121212;
+      top: -6px;
+      left: -8px;
+      background: var(--accent-2);
+      color: #1a140e;
       font-size: 9px;
       font-weight: 900;
-      padding: 2px 5px;
-      border-radius: 6px;
-      border: 1px solid #fff;
-      box-shadow: 0 0 6px rgba(0, 210, 211, 0.8);
+      padding: 2px 6px;
+      border-radius: 3px;
+      transform: rotate(-8deg);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
       z-index: 10;
       text-transform: uppercase;
     }
 
-    /* PISTE DE COURSE AMÉLIORÉE */
+    .btn-up-moto {
+      width: 100%;
+      background: linear-gradient(180deg, #ffce3d, var(--accent-2));
+      color: #1a140e;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 0;
+      cursor: pointer;
+      margin-top: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .btn-up-moto:disabled {
+      background: #3d352b;
+      color: #7a6e5d;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* SÉLECTION MOTO ACTIVE */
+    .selection-actuelle {
+      max-width: 150px;
+      margin: 6px auto 14px auto;
+      position: relative;
+    }
+    .selection-actuelle::before {
+      content: "TA MOTO";
+      display: block;
+      text-align: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--accent-2);
+      margin-bottom: 6px;
+    }
+
+    /* PISTE DE COURSE */
     .piste-container {
-      background: linear-gradient(180deg, #3e2723 0%, #27150d 100%);
-      border: 3px solid #6d4c41;
-      border-radius: 16px;
+      background:
+        radial-gradient(rgba(0,0,0,0.35) 18%, transparent 19%) 0 0/22px 22px,
+        radial-gradient(rgba(0,0,0,0.35) 18%, transparent 19%) 11px 11px/22px 22px,
+        linear-gradient(180deg, #4a3319 0%, #241708 100%);
+      border: 3px solid #5c3d1c;
+      border-radius: 14px;
       padding: 12px;
       margin-top: 15px;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 8px 16px rgba(0,0,0,0.5);
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.75), 0 8px 16px rgba(0,0,0,0.5);
     }
 
-    /* Zone du Saut en 3D sur la piste */
     .zone-saut-piste {
       position: absolute;
-      left: 45%;
-      width: 15%;
       top: 0;
       bottom: 0;
       background: repeating-linear-gradient(
         45deg,
-        rgba(247, 183, 49, 0.2),
-        rgba(247, 183, 49, 0.2) 10px,
+        rgba(242, 183, 5, 0.22),
+        rgba(242, 183, 5, 0.22) 10px,
         rgba(0, 0, 0, 0.3) 10px,
         rgba(0, 0, 0, 0.3) 20px
       );
-      border-left: 3px dashed #f7b731;
-      border-right: 3px dashed #f7b731;
+      border-left: 3px dashed var(--accent-2);
+      border-right: 3px dashed var(--accent-2);
       z-index: 1;
       display: flex;
       align-items: center;
@@ -296,19 +445,21 @@
     }
 
     .rampe-label {
+      font-family: 'Rajdhani', sans-serif;
       font-size: 10px;
       font-weight: 900;
-      color: #f7b731;
+      color: var(--accent-2);
       text-transform: uppercase;
       transform: rotate(-90deg);
       letter-spacing: 1px;
       text-shadow: 0 0 4px #000;
+      white-space: nowrap;
     }
 
     .couloir {
       position: relative;
-      height: 52px;
-      border-bottom: 2px dashed rgba(255,255,255,0.15);
+      height: 48px;
+      border-bottom: 2px dashed rgba(255,255,255,0.12);
       display: flex;
       align-items: center;
     }
@@ -328,23 +479,23 @@
     }
 
     .pilote-icon {
-      font-size: 26px;
+      font-size: 24px;
       filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.6));
     }
 
-    /* Animations de Saut */
+    .pilote-icon.en-tete {
+      filter: drop-shadow(0 0 7px var(--accent-2)) drop-shadow(2px 4px 2px rgba(0,0,0,0.6));
+      animation: leaderPulse 0.7s infinite alternate;
+    }
+
+    @keyframes leaderPulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.12); }
+    }
+
     .en-saut {
       transform: translateY(-18px) scale(1.3) rotate(-15deg) !important;
       filter: drop-shadow(0 15px 8px rgba(0,0,0,0.5)) !important;
-    }
-
-    .effet-boost {
-      animation: boostAnim 0.2s infinite alternate;
-    }
-
-    @keyframes boostAnim {
-      0% { transform: scale(1) rotate(0deg); }
-      100% { transform: scale(1.2) rotate(-5deg); }
     }
 
     .ligne-arrivee {
@@ -352,16 +503,13 @@
       right: 20px;
       top: 0;
       bottom: 0;
-      width: 12px;
-      background: repeating-linear-gradient(
-        0deg,
-        #fff,
-        #fff 6px,
-        #000 6px,
-        #000 12px
-      );
+      width: 16px;
+      background:
+        repeating-conic-gradient(#fff 0deg 90deg, #111 90deg 180deg) 0 0/10px 10px;
       box-shadow: 0 0 8px rgba(255,255,255,0.5);
       z-index: 1;
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
     }
 
     .nom-pilote {
@@ -369,52 +517,117 @@
       left: 6px;
       top: 2px;
       font-size: 9px;
-      color: #d1d8e0;
-      font-weight: bold;
+      color: #d9cfc0;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 3;
     }
 
-    .synergie-box {
-      background: #2d3436;
-      border: 1px solid #00d2d3;
-      color: #00d2d3;
-      font-size: 11px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      text-align: center;
-      margin-bottom: 10px;
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--text-dim);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .rank-badge.rank-premier {
+      background: var(--accent-2);
+      color: #1a140e;
+      box-shadow: 0 0 5px rgba(242,183,5,0.8);
+    }
+
+    /* OVERLAY DE DÉPART */
+    .overlay-depart {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      background: rgba(10, 7, 4, 0.82);
       display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      border-radius: 11px;
     }
 
-    /* INTERFACE DE TIMING DU SAUT (QTE) */
+    .txt-compte-rebours {
+      font-family: 'Teko', sans-serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--accent-2);
+      letter-spacing: 1px;
+      text-shadow: 0 0 12px rgba(242,183,5,0.5);
+    }
+
+    .btn-holeshot {
+      background: #3d3226;
+      color: var(--text-dim);
+      border: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+    .btn-holeshot.actif {
+      background: linear-gradient(180deg, #38c95e, var(--mx-green));
+      color: #0e1f12;
+      box-shadow: 0 0 15px rgba(47, 158, 68, 0.7);
+      animation: pulse 0.4s infinite alternate;
+    }
+    .btn-holeshot.faux-depart {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* MODULE DE SAUT */
     .panneau-saut {
-      background: #1e1e1e;
-      border: 2px solid #333;
-      border-radius: 12px;
+      background: var(--surface);
+      border: 2px solid var(--line);
+      border-radius: 10px;
       padding: 10px;
       margin-top: 10px;
       text-align: center;
     }
 
+    .titre-saut {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: 0.3px;
+    }
+
     .jauge-saut-container {
       width: 100%;
       height: 16px;
-      background: #222;
+      background: #1a140e;
       border-radius: 8px;
       margin: 8px 0;
       position: relative;
       overflow: hidden;
-      border: 1px solid #444;
+      border: 1px solid var(--line);
     }
 
     .jauge-zone-parfaite {
       position: absolute;
-      left: 45%;
-      width: 15%;
       height: 100%;
-      background: #20bf6b;
-      box-shadow: 0 0 8px #20bf6b;
+      background: var(--mx-green);
+      box-shadow: 0 0 8px var(--mx-green);
+      transition: left 0.3s ease, width 0.3s ease;
     }
 
     .jauge-curseur {
@@ -422,19 +635,20 @@
       left: 0%;
       width: 4%;
       height: 100%;
-      background: #fff;
-      box-shadow: 0 0 6px #fff;
+      background: var(--accent-2);
+      box-shadow: 0 0 6px var(--accent-2);
       border-radius: 2px;
     }
 
     .btn-saut {
       width: 100%;
-      background: #4b6584;
-      color: #fff;
+      background: #3d3226;
+      color: var(--text-dim);
+      font-family: 'Rajdhani', sans-serif;
       font-size: 16px;
       font-weight: 900;
       padding: 14px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       text-transform: uppercase;
@@ -443,28 +657,141 @@
     }
 
     .btn-saut.actif {
-      background: linear-gradient(135deg, #20bf6b, #0be881);
-      color: #121212;
-      box-shadow: 0 0 15px rgba(32, 191, 107, 0.8);
+      background: linear-gradient(180deg, #38c95e, var(--mx-green));
+      color: #0e1f12;
+      box-shadow: 0 0 15px rgba(47, 158, 68, 0.7);
       animation: pulse 0.5s infinite alternate;
     }
 
     .feedback-saut {
-      font-size: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
       font-weight: 900;
       height: 20px;
       margin-top: 4px;
     }
 
     .info-attributs {
-      background: #1e1e1e;
-      border: 1px solid #333;
+      background: var(--surface);
+      border: 1px solid var(--line);
       padding: 8px;
       border-radius: 8px;
-      font-size: 10px;
-      color: #ccc;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
       margin-bottom: 10px;
       text-align: center;
+    }
+    .info-attributs b { color: var(--text); }
+
+    /* RÉSULTATS */
+    .panneau-resultats {
+      background: var(--surface);
+      border: 2px solid var(--accent-2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 12px;
+    }
+    .panneau-resultats h3 { margin: 0 0 6px 0; color: var(--accent-2); }
+    .panneau-resultats ol {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .panneau-resultats li { margin-bottom: 3px; }
+
+    /* SYSTEME TYCOON */
+    .tycoon-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .tycoon-item {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .tycoon-icon {
+      font-size: 32px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tycoon-details {
+      flex-grow: 1;
+    }
+
+    .tycoon-title {
+      font-family: 'Teko', sans-serif;
+      font-size: 20px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .tycoon-stats {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .tycoon-stats b {
+      color: var(--accent-2);
+    }
+
+    .btn-upgrade {
+      background: linear-gradient(180deg, #38c95e, var(--mx-green));
+      color: #0e1f12;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 85px;
+    }
+
+    .btn-upgrade:disabled {
+      background: #3a3128;
+      color: var(--text-dim);
+      cursor: not-allowed;
+    }
+
+    .clicker-zone {
+      background: var(--surface);
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      margin-bottom: 15px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.05s ease;
+    }
+
+    .clicker-zone:active {
+      transform: scale(0.98);
+      background: var(--surface-2);
     }
   </style>
 </head>
@@ -472,7 +799,10 @@
 
   <header>
     <div class="logo">🏍️ MX Collector</div>
-    <div class="pieces-compteur">🪙 <span id="nb-pieces">100</span></div>
+    <div class="header-stats">
+      <div class="income-compteur">⚡ +<span id="revenu-passif">5</span>/s</div>
+      <div class="pieces-compteur">🪙 <span id="nb-pieces">100</span></div>
+    </div>
   </header>
 
   <!-- SECTION 1 : BOUTIQUE -->
@@ -487,7 +817,7 @@
     </div>
 
     <button id="btn-booster" class="btn-action" onclick="ouvrirBooster()">Ouvrir Booster (50 🪙)</button>
-    <p id="indication-booster" style="font-size: 12px; color: #aaa; display: none; text-align: center;">Touche les cartes pour les révéler !</p>
+    <p id="indication-booster" style="font-size: 12px; color: var(--text-dim); display: none; text-align: center;">Touche les cartes pour les révéler !</p>
     <div id="booster-zone" class="grille-cartes"></div>
   </section>
 
@@ -497,63 +827,100 @@
       <h2>Garage (<span id="total-cartes">0</span>/<span id="max-cartes">0</span>)</h2>
       <button class="btn-action btn-reset" onclick="reinitialiserGarage()">Reset</button>
     </div>
-    <p style="font-size: 12px; color: #aaa;">Touche une carte pour l'ajouter/retirer de ton écurie (3 max).</p>
+    <p style="font-size: 12px; color: var(--text-dim);">Touche une moto pour la sélectionner. Améliore-la pour augmenter la Puissance et ton Revenu Tycoon !</p>
     <div id="album-zone"></div>
   </section>
 
-  <!-- SECTION 3 : PISTE DE COURSE -->
+  <!-- SECTION 3 : TYCOON -->
+  <section id="sec-tycoon">
+    <h2>Garage Tycoon</h2>
+
+    <div class="clicker-zone" onclick="clicMécanicien(event)">
+      <div style="font-size: 32px;">🛠️</div>
+      <div style="font-family:'Teko', sans-serif; font-size: 20px; color: var(--accent-2);">RÉPARER UNE MOTO</div>
+      <div style="font-size: 12px; color: var(--text-dim);">Clique pour gagner des pièces immédiatement !</div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--line); padding: 10px; border-radius: 8px; font-size: 12px; text-align: center; margin-bottom: 12px;">
+      💡 <b>Revenu Passif Moto :</b> <b id="total-revenu-motos" style="color:var(--accent-2)">+0 🪙/s</b> apporté par tes motos améliorées !
+    </div>
+
+    <div class="tycoon-grid" id="tycoon-container">
+      <!-- Bâtiments Tycoon générés dynamiquement par JS -->
+    </div>
+  </section>
+
+  <!-- SECTION 4 : PISTE DE COURSE -->
   <section id="sec-combat">
     <h2>Supercross Arena</h2>
     
     <div class="info-attributs">
-      ⚡ <b>Vitesse</b> bat Style | 🎨 <b>Style</b> bat Technique | 🛠️ <b>Technique</b> bat Vitesse (+25% Boost)
+      ⚡ <b>Vitesse</b> bat Style | 🎨 <b>Style</b> bat Technique | 🛠️ <b>Technique</b> bat Vitesse (+25% Boost) — 2 sauts chronométrés sur la piste !
     </div>
 
-    <div id="res-combat" style="font-size: 14px; font-weight: bold; color: #f7b731; text-align: center; margin-bottom: 10px;">
-      Prépare tes 3 motos dans le Garage !
-    </div>
-    <div id="synergie-info" class="synergie-box">⚡ Synergie Constructeur (+15% Vitesse) !</div>
-
-    <div>
-      <h3>Ton Écurie (<span id="count-deck">0</span>/3 motos)</h3>
-      <div id="mon-deck" class="grille-cartes"></div>
+    <div id="res-combat" style="font-size: 14px; font-weight: 700; color: var(--accent-2); text-align: center; margin-bottom: 10px;">
+      Sélectionne ta moto dans le Garage !
     </div>
 
-    <div class="piste-container">
-      <div class="zone-saut-piste">
-        <span class="rampe-label"> Appel de Saut </span>
+    <div class="selection-actuelle">
+      <div id="mon-deck"></div>
+    </div>
+
+    <div class="piste-container" id="piste-container">
+
+      <div class="overlay-depart" id="overlay-depart">
+        <div class="txt-compte-rebours" id="txt-compte-rebours">PRÊT ?</div>
+        <button class="btn-holeshot" id="btn-holeshot" onclick="tenterHoleshot()">ATTENDS LE FEU VERT...</button>
+      </div>
+
+      <div class="zone-saut-piste" id="zone-saut-1" style="left:22%; width:20%;">
+        <span class="rampe-label">Saut 1</span>
+      </div>
+      <div class="zone-saut-piste" id="zone-saut-2" style="left:58%; width:22%;">
+        <span class="rampe-label">Saut 2</span>
       </div>
       <div class="ligne-arrivee"></div>
 
       <div class="couloir">
-        <span class="nom-pilote">Toi</span>
+        <span class="nom-pilote"><span id="rank-joueur" class="rank-badge">-</span>Toi</span>
         <div id="wrapper-joueur" class="pilote-wrapper" style="left: 0%;">
           <span id="moto-joueur" class="pilote-icon">🏍️</span>
         </div>
       </div>
       <div class="couloir">
-        <span class="nom-pilote" id="nom-ia1">Rival 1</span>
+        <span class="nom-pilote"><span id="rank-ia1" class="rank-badge">-</span>Rival 1 <span id="label-ia1"></span></span>
         <div id="wrapper-ia1" class="pilote-wrapper" style="left: 0%;">
           <span id="moto-ia1" class="pilote-icon">🏍️</span>
         </div>
       </div>
       <div class="couloir">
-        <span class="nom-pilote" id="nom-ia2">Rival 2</span>
+        <span class="nom-pilote"><span id="rank-ia2" class="rank-badge">-</span>Rival 2 <span id="label-ia2"></span></span>
         <div id="wrapper-ia2" class="pilote-wrapper" style="left: 0%;">
           <span id="moto-ia2" class="pilote-icon">🏍️</span>
+        </div>
+      </div>
+      <div class="couloir">
+        <span class="nom-pilote"><span id="rank-ia3" class="rank-badge">-</span>Rival 3 <span id="label-ia3"></span></span>
+        <div id="wrapper-ia3" class="pilote-wrapper" style="left: 0%;">
+          <span id="moto-ia3" class="pilote-icon">🏍️</span>
         </div>
       </div>
     </div>
 
     <!-- MODULE DE SAUT PARFAIT INTERACTIF -->
     <div class="panneau-saut">
-      <div style="font-size: 11px; font-weight: bold; color: #aaa;">TIMING DE SAUT</div>
+      <div class="titre-saut" id="titre-saut">SAUT 1 — TIMING</div>
       <div class="jauge-saut-container">
-        <div class="jauge-zone-parfaite"></div>
+        <div class="jauge-zone-parfaite" id="jauge-zone-parfaite" style="left:28%; width:8%;"></div>
         <div id="curseur-saut" class="jauge-curseur"></div>
       </div>
-      <button id="btn-declencher-saut" class="btn-saut" onclick="tenterSaut()" disabled>PREPARE LE SAUT...</button>
+      <button id="btn-declencher-saut" class="btn-saut" onclick="tenterSaut()" disabled>PREPARE LE SAUT 1...</button>
       <div id="txt-feedback-saut" class="feedback-saut"></div>
+    </div>
+
+    <div class="panneau-resultats" id="panneau-resultats" style="display:none;">
+      <h3>🏁 Classement final</h3>
+      <ol id="liste-resultats"></ol>
     </div>
 
     <button id="btn-lancer-combat" class="btn-action" onclick="lancerCourse()" disabled>DÉMARRER LA COURSE</button>
@@ -567,6 +934,10 @@
     <button class="nav-btn" onclick="changerOnglet('album', this)">
       <span class="icon">📖</span>
       <span>Garage</span>
+    </button>
+    <button class="nav-btn" onclick="changerOnglet('tycoon', this)">
+      <span class="icon">🏗️</span>
+      <span>Tycoon</span>
     </button>
     <button class="nav-btn" onclick="changerOnglet('combat', this)">
       <span class="icon">🏁</span>
@@ -587,24 +958,8 @@
 
     const imagesMotos = {
       "Yamaha-85 cc-normale": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-85 cc-rare": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-85 cc-epique": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-85 cc-gold": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-
       "Yamaha-125 cc-normale": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-125 cc-rare": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-125 cc-epique": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-125 cc-gold": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-
-      "Yamaha-250 cc-normale": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-250 cc-rare": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-250 cc-epique": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-250 cc-gold": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-
-      "Yamaha-450 cc-normale": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-450 cc-rare": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-450 cc-epique": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Yamaha-450 cc-gold": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80"
+      "Yamaha-250 cc-normale": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80"
     };
 
     const IMAGE_DEFAUT = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80";
@@ -615,20 +970,107 @@
     const PRIX_BOOSTER = 50;
     const multiplicateurRarete = { normale: 1, rare: 1.15, epique: 1.3, gold: 1.5 };
 
-    let monAlbum = JSON.parse(localStorage.getItem('monAlbumMX')) || {};
-    let mesPieces = parseInt(localStorage.getItem('mesPiecesMX')) || 100;
-    let monDeck = [];
-    let courseEnCours = false;
-    let sautTente = false;
-    let multiplicateurBoostJoueur = 1.0;
+    const zonesSaut = [
+      { bonDebut: 22, bonFin: 42, parfaitDebut: 28, parfaitFin: 36 },
+      { bonDebut: 58, bonFin: 80, parfaitDebut: 66, parfaitFin: 74 }
+    ];
 
+    // DEFINITIONS TYCOON
+    const batimentsDef = [
+      { id: "atelier", nom: "Atelier Mécanique", icone: "🔧", basePrix: 100, baseRevenu: 2, multPrix: 1.5 },
+      { id: "lavage", nom: "Station de Lavage", icone: "🧼", basePrix: 350, baseRevenu: 8, multPrix: 1.6 },
+      { id: "piste", nom: "Piste d'Entraînement", icone: "🏜️", basePrix: 1200, baseRevenu: 25, multPrix: 1.7 },
+      { id: "showroom", nom: "Showroom VIP", icone: "🏛️", basePrix: 5000, baseRevenu: 100, multPrix: 1.8 }
+    ];
+
+    let monAlbum = JSON.parse(localStorage.getItem('monAlbumMX')) || {};
+    let mesNiveauxMotos = JSON.parse(localStorage.getItem('mesNiveauxMotosMX')) || {};
+    let mesPieces = parseInt(localStorage.getItem('mesPiecesMX')) || 100;
+    let motoSelectionnee = localStorage.getItem('motoActiveMX') || null;
+    let monTycoon = JSON.parse(localStorage.getItem('monTycoonMX')) || {
+      atelier: 0,
+      lavage: 0,
+      piste: 0,
+      showroom: 0
+    };
+
+    let courseEnCours = false;
+
+    // État de course
+    let racers = [];
+    let zoneIndexActuelle = 0;
+    let sautTente = false;
+    let fenetreSautOuverte = false;
+    let ticksDepuisDebut = 0;
+    let intervalCourse = null;
+    let holeshotPhase = 'attente';
+    let holeshotResultat = null;
+
+    // BOUCLE REVENUS PASSIFS TYCOON (Toutes les 1 seconde)
     setInterval(() => {
-      mesPieces += 5;
+      let revenu = calculRevenuPassifTotal();
+      mesPieces += revenu;
       sauvegarderEtMettreAJour();
-    }, 5000);
+    }, 1000);
 
     afficherAlbum();
+    afficherMotoSelectionnee();
+    afficherTycoon();
     mettreAJourUI();
+
+    function getNiveauMoto(cleCarte) {
+      return mesNiveauxMotos[cleCarte] || 1;
+    }
+
+    function getPrixAmeliorationMoto(cleCarte) {
+      const niv = getNiveauMoto(cleCarte);
+      const [, modele, rarete] = cleCarte.split('-');
+      const pwrBase = calculPuissanceBase(modele, rarete);
+      return Math.round(pwrBase * 1.5 * Math.pow(1.6, niv - 1));
+    }
+
+    function getRevenuPassifMoto(cleCarte) {
+      const qte = monAlbum[cleCarte] || 0;
+      if (qte === 0) return 0;
+      const niv = getNiveauMoto(cleCarte);
+      const [, modele, rarete] = cleCarte.split('-');
+      const pwrBase = calculPuissanceBase(modele, rarete);
+      // Chaque niveau au-dessus de 1 ajoute du revenu passif
+      return Math.round((pwrBase / 20) * (niv - 1));
+    }
+
+    function calculRevenuPassifMotosTotal() {
+      let total = 0;
+      Object.keys(monAlbum).forEach(cle => {
+        total += getRevenuPassifMoto(cle);
+      });
+      return total;
+    }
+
+    function calculRevenuPassifTotal() {
+      let total = 1; // Gain de base
+      batimentsDef.forEach(b => {
+        const niv = monTycoon[b.id] || 0;
+        total += niv * b.baseRevenu;
+      });
+      total += calculRevenuPassifMotosTotal();
+      return total;
+    }
+
+    function ameliorerMoto(cleCarte, event) {
+      if (event) event.stopPropagation();
+      const prix = getPrixAmeliorationMoto(cleCarte);
+      if (mesPieces >= prix) {
+        mesPieces -= prix;
+        const nivActuel = getNiveauMoto(cleCarte);
+        mesNiveauxMotos[cleCarte] = nivActuel + 1;
+        sauvegarderEtMettreAJour();
+        afficherAlbum();
+        if (cleCarte === motoSelectionnee) {
+          afficherMotoSelectionnee();
+        }
+      }
+    }
 
     function getTypeCarte(marque) {
       if (marque === "Yamaha" || marque === "KTM") return "vitesse";
@@ -657,8 +1099,14 @@
       btnEl.classList.add('actif');
     }
 
-    function calculPuissance(modele, rarete) {
+    function calculPuissanceBase(modele, rarete) {
       return Math.round(parseInt(modele) * multiplicateurRarete[rarete]);
+    }
+
+    function calculPuissance(modele, rarete, cleCarte) {
+      const pwrBase = calculPuissanceBase(modele, rarete);
+      const niv = cleCarte ? getNiveauMoto(cleCarte) : 1;
+      return Math.round(pwrBase * (1 + (niv - 1) * 0.15));
     }
 
     function tirageAleatoire(tableau) {
@@ -667,26 +1115,26 @@
 
     function sauvegarderEtMettreAJour() {
       localStorage.setItem('monAlbumMX', JSON.stringify(monAlbum));
+      localStorage.setItem('mesNiveauxMotosMX', JSON.stringify(mesNiveauxMotos));
       localStorage.setItem('mesPiecesMX', mesPieces.toString());
+      localStorage.setItem('monTycoonMX', JSON.stringify(monTycoon));
+      if (motoSelectionnee) localStorage.setItem('motoActiveMX', motoSelectionnee);
       mettreAJourUI();
     }
 
-    function verifierSynergie() {
-      if (monDeck.length < 3) return false;
-      const marque1 = monDeck[0].split('-')[0];
-      const marque2 = monDeck[1].split('-')[0];
-      const marque3 = monDeck[2].split('-')[0];
-
-      return (marque1 === marque2 && marque2 === marque3);
-    }
-
-    function getTypeDominant(deck) {
-      const counts = { vitesse: 0, style: 0, technique: 0 };
-      deck.forEach(cle => {
-        const marque = cle.split('-')[0];
-        counts[getTypeCarte(marque)]++;
-      });
-      return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+    function reinitialiserGarage() {
+      if (confirm("Réinitialiser tout le jeu (Cartes, Niveaux, Pièces et Tycoon) ?")) {
+        localStorage.clear();
+        monAlbum = {};
+        mesNiveauxMotos = {};
+        mesPieces = 100;
+        motoSelectionnee = null;
+        monTycoon = { atelier: 0, lavage: 0, piste: 0, showroom: 0 };
+        sauvegarderEtMettreAJour();
+        afficherAlbum();
+        afficherMotoSelectionnee();
+        afficherTycoon();
+      }
     }
 
     function calculerAvantageType(typeA, typeB) {
@@ -698,16 +1146,68 @@
 
     function mettreAJourUI() {
       document.getElementById('nb-pieces').innerText = mesPieces;
+      document.getElementById('revenu-passif').innerText = calculRevenuPassifTotal();
+      document.getElementById('total-revenu-motos').innerText = `+${calculRevenuPassifMotosTotal()} 🪙/s`;
       document.getElementById('btn-booster').disabled = mesPieces < PRIX_BOOSTER;
-      document.getElementById('count-deck').innerText = monDeck.length;
-      document.getElementById('btn-lancer-combat').disabled = monDeck.length < 3 || courseEnCours;
+      document.getElementById('btn-lancer-combat').disabled = !motoSelectionnee || courseEnCours;
 
-      const synergieBox = document.getElementById('synergie-info');
-      if (verifierSynergie()) {
-        synergieBox.style.display = 'block';
-      } else {
-        synergieBox.style.display = 'none';
+      // Mettre à jour boutons Tycoon
+      batimentsDef.forEach(b => {
+        const niv = monTycoon[b.id] || 0;
+        const prix = Math.round(b.basePrix * Math.pow(b.multPrix, niv));
+        const btn = document.getElementById(`btn-up-${b.id}`);
+        if (btn) btn.disabled = mesPieces < prix;
+      });
+    }
+
+    /* LOGIQUE TYCOON */
+    function clicMécanicien(e) {
+      mesPieces += 1;
+      sauvegarderEtMettreAJour();
+      if ('vibrate' in navigator) navigator.vibrate(20);
+    }
+
+    function acheterBatiment(id) {
+      const def = batimentsDef.find(b => b.id === id);
+      const niv = monTycoon[id] || 0;
+      const prix = Math.round(def.basePrix * Math.pow(def.multPrix, niv));
+
+      if (mesPieces >= prix) {
+        mesPieces -= prix;
+        monTycoon[id] = niv + 1;
+        sauvegarderEtMettreAJour();
+        afficherTycoon();
       }
+    }
+
+    function afficherTycoon() {
+      const container = document.getElementById('tycoon-container');
+      container.innerHTML = '';
+
+      batimentsDef.forEach(b => {
+        const niv = monTycoon[b.id] || 0;
+        const prix = Math.round(b.basePrix * Math.pow(b.multPrix, niv));
+        const gainActuel = niv * b.baseRevenu;
+        const gainSuivant = (niv + 1) * b.baseRevenu;
+
+        container.innerHTML += `
+          <div class="tycoon-item">
+            <div class="tycoon-icon">${b.icone}</div>
+            <div class="tycoon-details">
+              <div class="tycoon-title">${b.nom} (Niv. ${niv})</div>
+              <div class="tycoon-stats">
+                Génère: <b>+${gainActuel} 🪙/s</b><br>
+                Prochain niveau: +${gainSuivant} 🪙/s
+              </div>
+            </div>
+            <button id="btn-up-${b.id}" class="btn-upgrade" onclick="acheterBatiment('${b.id}')">
+              <span>AMÉLIORER</span>
+              <span style="font-size:11px;">🪙 ${prix}</span>
+            </button>
+          </div>
+        `;
+      });
+      mettreAJourUI();
     }
 
     function ouvrirBooster() {
@@ -732,6 +1232,11 @@
         const estNouvelle = !monAlbum[cle] || monAlbum[cle] === 0;
 
         monAlbum[cle] = (monAlbum[cle] || 0) + 1;
+
+        if (!motoSelectionnee) {
+          motoSelectionnee = cle;
+          afficherMotoSelectionnee();
+        }
 
         boosterZone.innerHTML += `
           <div class="carte-container" onclick="revelerCarte(this)">
@@ -764,265 +1269,388 @@
       }
     }
 
-    function basculerCarteDeck(cleCarte) {
+    function choisirMotoUnique(cleCarte) {
       if (courseEnCours) return;
-      const index = monDeck.indexOf(cleCarte);
-      if (index > -1) {
-        monDeck.splice(index, 1);
-      } else {
-        if (monDeck.length < 3) {
-          monDeck.push(cleCarte);
-        } else {
-          alert("Écurie pleine (3 motos max).");
-        }
-      }
-      afficherDeckJoueur();
+      motoSelectionnee = cleCarte;
+      afficherMotoSelectionnee();
       afficherAlbum();
       mettreAJourUI();
     }
 
-    function afficherDeckJoueur() {
+    function afficherMotoSelectionnee() {
       const deckDiv = document.getElementById('mon-deck');
-      deckDiv.innerHTML = '';
-      const synergieActive = verifierSynergie();
+      if (!motoSelectionnee) {
+        deckDiv.innerHTML = '<p style="font-size:12px; color:var(--text-dim); text-align:center;">Aucune moto choisie</p>';
+        return;
+      }
 
-      monDeck.forEach(cle => {
-        const [marque, modele, rarete] = cle.split('-');
-        let pwr = calculPuissance(modele, rarete);
-        if (synergieActive) pwr = Math.round(pwr * 1.15);
+      const [marque, modele, rarete] = motoSelectionnee.split('-');
+      const pwr = calculPuissance(modele, rarete, motoSelectionnee);
+      const niv = getNiveauMoto(motoSelectionnee);
+      const imgUrl = getImageUrl(marque, modele, rarete);
+      const texteAnnee = getAnneeOuEdition(modele, rarete);
+      const estCarbone = (modele === "85 cc" && rarete === "gold");
+      const typeMoto = getTypeCarte(marque);
+      const revPassif = getRevenuPassifMoto(motoSelectionnee);
 
-        const imgUrl = getImageUrl(marque, modele, rarete);
-        const texteAnnee = getAnneeOuEdition(modele, rarete);
-        const estCarbone = (modele === "85 cc" && rarete === "gold");
-        const typeMoto = getTypeCarte(marque);
-
-        deckDiv.innerHTML += `
-          <div class="carte-container retournee" onclick="basculerCarteDeck('${cle}')">
-            <div class="carte-inner">
-              <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
-                <div class="marque">${marque}</div>
-                <img class="carte-image" src="${imgUrl}">
-                <div class="modele">${modele}</div>
-                <div class="type-moto">${typeMoto}</div>
-                <div class="annee">${texteAnnee}</div>
-                <div class="puissance">⚡ ${pwr}</div>
-              </div>
+      deckDiv.innerHTML = `
+        <div class="carte-container retournee">
+          <div class="carte-inner">
+            <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
+              <div class="badge-niveau">Niv. ${niv}</div>
+              <div class="marque">${marque}</div>
+              <img class="carte-image" src="${imgUrl}">
+              <div class="modele">${modele}</div>
+              <div class="type-moto">${typeMoto}</div>
+              <div class="annee">${texteAnnee}</div>
+              <div class="puissance">⚡ ${pwr}</div>
+              <div class="revenu-carte">+${revPassif} 🪙/s</div>
             </div>
           </div>
-        `;
-      });
-    }
-
-    function tenterSaut() {
-      if (!courseEnCours || sautTente) return;
-      sautTente = true;
-
-      const curseur = document.getElementById('curseur-saut');
-      const btn = document.getElementById('btn-declencher-saut');
-      const feedback = document.getElementById('txt-feedback-saut');
-      const motoJ = document.getElementById('wrapper-joueur');
-
-      const posCurseur = parseFloat(curseur.style.left);
-      btn.disabled = true;
-      btn.classList.remove('actif');
-
-      // Zone parfaite entre 45% et 60%
-      if (posCurseur >= 45 && posCurseur <= 60) {
-        multiplicateurBoostJoueur = 1.8;
-        feedback.innerText = "🔥 SAUT PARFAIT ! (+80% Vitesse)";
-        feedback.style.color = "#20bf6b";
-        motoJ.classList.add('en-saut');
-        if ('vibrate' in navigator) navigator.vibrate([50, 30, 80]);
-        setTimeout(() => motoJ.classList.remove('en-saut'), 800);
-      } else if (posCurseur >= 35 && posCurseur <= 70) {
-        multiplicateurBoostJoueur = 1.3;
-        feedback.innerText = "👍 BON SAUT ! (+30% Vitesse)";
-        feedback.style.color = "#f7b731";
-        motoJ.classList.add('en-saut');
-        setTimeout(() => motoJ.classList.remove('en-saut'), 600);
-      } else {
-        multiplicateurBoostJoueur = 0.9;
-        feedback.innerText = "❌ RATÉ / MAUVAIS TIMING !";
-        feedback.style.color = "#ff4757";
-      }
-    }
-
-    function lancerCourse() {
-      if (monDeck.length < 3 || courseEnCours) return;
-
-      courseEnCours = true;
-      sautTente = false;
-      multiplicateurBoostJoueur = 1.0;
-
-      document.getElementById('btn-lancer-combat').disabled = true;
-      document.getElementById('res-combat').innerText = "🏁 Course en cours ! Prépare ton saut !";
-      document.getElementById('txt-feedback-saut').innerText = "";
-
-      const btnSaut = document.getElementById('btn-declencher-saut');
-      btnSaut.innerText = "ATTENDS LE BON TIMING...";
-      btnSaut.disabled = true;
-      btnSaut.classList.remove('actif');
-
-      // Decks AI
-      const deckIA1 = [
-        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
-        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
-        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`
-      ];
-      const deckIA2 = [
-        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
-        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
-        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`
-      ];
-
-      const typeJ = getTypeDominant(monDeck);
-      const typeIA1 = getTypeDominant(deckIA1);
-      const typeIA2 = getTypeDominant(deckIA2);
-
-      let pwrJoueur = 0, pwrIA1 = 0, pwrIA2 = 0;
-
-      monDeck.forEach(c => { const [m, mod, r] = c.split('-'); pwrJoueur += calculPuissance(mod, r); });
-      deckIA1.forEach(c => { const [m, mod, r] = c.split('-'); pwrIA1 += calculPuissance(mod, r); });
-      deckIA2.forEach(c => { const [m, mod, r] = c.split('-'); pwrIA2 += calculPuissance(mod, r); });
-
-      if (verifierSynergie()) pwrJoueur *= 1.15;
-
-      pwrJoueur *= Math.max(calculerAvantageType(typeJ, typeIA1), calculerAvantageType(typeJ, typeIA2));
-      pwrIA1 *= calculerAvantageType(typeIA1, typeJ);
-      pwrIA2 *= calculerAvantageType(typeIA2, typeJ);
-
-      const wrapperJ = document.getElementById('wrapper-joueur');
-      const wrapperIA1 = document.getElementById('wrapper-ia1');
-      const wrapperIA2 = document.getElementById('wrapper-ia2');
-      const curseur = document.getElementById('curseur-saut');
-
-      document.getElementById('nom-ia1').innerText = `Rival (${typeIA1})`;
-      document.getElementById('nom-ia2').innerText = `Rival (${typeIA2})`;
-
-      let posJ = 0, posIA1 = 0, posIA2 = 0;
-      wrapperJ.style.left = '0%';
-      wrapperIA1.style.left = '0%';
-      wrapperIA2.style.left = '0%';
-
-      let fenetreSautOuverte = false;
-
-      const intervalle = setInterval(() => {
-        posJ += ((pwrJoueur / 140) + (Math.random() * 1.2)) * multiplicateurBoostJoueur;
-        posIA1 += (pwrIA1 / 140) + (Math.random() * 1.2);
-        posIA2 += (pwrIA2 / 140) + (Math.random() * 1.2);
-
-        wrapperJ.style.left = Math.min(posJ, 80) + '%';
-        wrapperIA1.style.left = Math.min(posIA1, 80) + '%';
-        wrapperIA2.style.left = Math.min(posIA2, 80) + '%';
-
-        // Synchronisation curseur de la jauge avec l'avancée de la moto du joueur
-        let pctSaut = (posJ / 80) * 100;
-        curseur.style.left = Math.min(pctSaut, 96) + '%';
-
-        // Activation du bouton lorsque la moto approche du saut (35% - 65%)
-        if (pctSaut >= 35 && pctSaut <= 65 && !sautTente) {
-          if (!fenetreSautOuverte) {
-            fenetreSautOuverte = true;
-            btnSaut.disabled = false;
-            btnSaut.classList.add('actif');
-            btnSaut.innerText = "🚀 APPUIS MAINTENANT !";
-          }
-        } else if (pctSaut > 65 && !sautTente) {
-          btnSaut.disabled = true;
-          btnSaut.classList.remove('actif');
-          btnSaut.innerText = "TROP TARD !";
-        }
-
-        if (posJ >= 80 || posIA1 >= 80 || posIA2 >= 80) {
-          clearInterval(intervalle);
-          courseEnCours = false;
-
-          btnSaut.disabled = true;
-          btnSaut.classList.remove('actif');
-          btnSaut.innerText = "COURSE TERMINÉE";
-
-          const resDiv = document.getElementById('res-combat');
-          if (posJ >= posIA1 && posJ >= posIA2) {
-            mesPieces += 100;
-            resDiv.innerText = "🏆 VICTOIRE ÉPIQUE ! Tu remportes la course ! (+100 🪙)";
-          } else if (posJ >= posIA1 || posJ >= posIA2) {
-            mesPieces += 40;
-            resDiv.innerText = "🥈 2ème Place ! Très bon pilotage. (+40 🪙)";
-          } else {
-            resDiv.innerText = "🥉 3ème Place... Améliore ton timing au saut !";
-          }
-          sauvegarderEtMettreAJour();
-        }
-      }, 90);
+        </div>
+      `;
     }
 
     function afficherAlbum() {
       const albumZone = document.getElementById('album-zone');
       albumZone.innerHTML = '';
 
-      let cartesDebloquees = 0;
-      let totalCombinaisons = marques.length * cylindrees.length * raretes.length;
+      let totalPossede = 0;
+      let totalCartesExistantes = marques.length * cylindrees.length * raretes.length;
+
+      const grille = document.createElement('div');
+      grille.className = 'grille-cartes';
 
       marques.forEach(marque => {
-        let section = document.createElement('div');
-        const typeM = getTypeCarte(marque);
-        section.innerHTML = `<h3 style="color:#ffeaa7; margin: 15px 0 5px 0; font-size:14px;">${marque} <span style="font-size:10px; color:#00d2d3;">(${typeM})</span></h3>`;
-        let grille = document.createElement('div');
-        grille.className = 'grille-cartes';
-
         cylindrees.forEach(modele => {
           raretes.forEach(rarete => {
             const cle = `${marque}-${modele}-${rarete}`;
+            const qte = monAlbum[cle] || 0;
+            const estPossedee = qte > 0;
+            if (estPossedee) totalPossede++;
+
+            const estSelectionnee = (cle === motoSelectionnee);
             const imgUrl = getImageUrl(marque, modele, rarete);
-            const quantite = monAlbum[cle] || 0;
-            const possedee = quantite > 0;
-            const estDansDeck = monDeck.includes(cle);
-            const pwr = calculPuissance(modele, rarete);
             const texteAnnee = getAnneeOuEdition(modele, rarete);
             const estCarbone = (modele === "85 cc" && rarete === "gold");
-
-            if (possedee) cartesDebloquees++;
+            const typeMoto = getTypeCarte(marque);
+            const pwr = calculPuissance(modele, rarete, cle);
+            const niv = getNiveauMoto(cle);
+            const prixUp = getPrixAmeliorationMoto(cle);
+            const revPassif = getRevenuPassifMoto(cle);
+            const peutPayerUp = mesPieces >= prixUp;
 
             grille.innerHTML += `
-              <div class="carte-container retournee ${possedee ? '' : 'verrouillee'} ${estDansDeck ? 'selectionnee' : ''}" 
-                   onclick="${possedee ? `basculerCarteDeck('${cle}')` : ''}">
+              <div class="carte-container retournee ${!estPossedee ? 'verrouillee' : ''} ${estSelectionnee ? 'selectionnee' : ''}" 
+                   onclick="${estPossedee ? `choisirMotoUnique('${cle}')` : ''}">
                 <div class="carte-inner">
-                  <div class="carte-front ${possedee ? rarete : ''} ${possedee && estCarbone ? 'carbone-bg' : ''}">
-                    ${quantite > 1 ? `<div class="badge-compteur">x${quantite}</div>` : ''}
+                  <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
+                    ${qte > 1 ? `<div class="badge-compteur">${qte}</div>` : ''}
+                    ${estPossedee ? `<div class="badge-niveau">N. ${niv}</div>` : ''}
                     <div class="marque">${marque}</div>
                     <img class="carte-image" src="${imgUrl}">
                     <div class="modele">${modele}</div>
-                    <div class="type-moto">${possedee ? typeM : ''}</div>
-                    <div class="annee">${possedee ? texteAnnee : '----'}</div>
-                    <div class="puissance">${possedee ? `⚡ ${pwr}` : ''}</div>
-                    <div class="rarete">${possedee ? rarete : '🔒'}</div>
+                    <div class="type-moto">${typeMoto}</div>
+                    <div class="annee">${texteAnnee}</div>
+                    <div class="puissance">⚡ ${pwr}</div>
+                    ${estPossedee ? `<div class="revenu-carte">+${revPassif} 🪙/s</div>` : ''}
+                    ${estPossedee ? `<button class="btn-up-moto" ${!peutPayerUp ? 'disabled' : ''} onclick="ameliorerMoto('${cle}', event)">UP (${prixUp}🪙)</button>` : ''}
                   </div>
                 </div>
               </div>
             `;
           });
         });
-
-        section.appendChild(grille);
-        albumZone.appendChild(section);
       });
 
-      document.getElementById('total-cartes').innerText = cartesDebloquees;
-      document.getElementById('max-cartes').innerText = totalCombinaisons;
+      albumZone.appendChild(grille);
+
+      document.getElementById('total-cartes').innerText = totalPossede;
+      document.getElementById('max-cartes').innerText = totalCartesExistantes;
     }
 
-    function reinitialiserGarage() {
-      if (confirm("Réinitialiser l'album et les pièces ?")) {
-        monAlbum = {};
-        mesPieces = 100;
-        monDeck = [];
-        localStorage.clear();
-        afficherDeckJoueur();
-        sauvegarderEtMettreAJour();
-        afficherAlbum();
+    // ---------- COURSE ----------
+
+    function lancerCourse() {
+      if (!motoSelectionnee || courseEnCours) return;
+
+      courseEnCours = true;
+      document.getElementById('btn-lancer-combat').disabled = true;
+      document.getElementById('panneau-resultats').style.display = 'none';
+      document.getElementById('res-combat').innerText = "Mets-toi en position sur la grille...";
+
+      preparerCoureurs();
+      demarrerCompteRebours();
+    }
+
+    function preparerCoureurs() {
+      const rival1 = `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`;
+      const rival2 = `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`;
+      const rival3 = `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`;
+
+      const [mJ, modJ, rJ] = motoSelectionnee.split('-');
+      const [m1, mod1, r1] = rival1.split('-');
+      const [m2, mod2, r2] = rival2.split('-');
+      const [m3, mod3, r3] = rival3.split('-');
+
+      const infos = [
+        { id: 'joueur', marque: mJ, modele: modJ, rarete: rJ, cle: motoSelectionnee },
+        { id: 'ia1', marque: m1, modele: mod1, rarete: r1, cle: null },
+        { id: 'ia2', marque: m2, modele: mod2, rarete: r2, cle: null },
+        { id: 'ia3', marque: m3, modele: mod3, rarete: r3, cle: null }
+      ];
+
+      const types = infos.map(inf => getTypeCarte(inf.marque));
+
+      racers = infos.map((inf, i) => {
+        const pwr = calculPuissance(inf.modele, inf.rarete, inf.cle);
+        let avantage = 1.0;
+        types.forEach((t, j) => {
+          if (j !== i) avantage = Math.max(avantage, calculerAvantageType(types[i], t));
+        });
+        return {
+          id: inf.id,
+          pwr,
+          type: types[i],
+          avantageType: avantage,
+          pos: 0,
+          boostSautMulti: 1.0
+        };
+      });
+
+      document.getElementById('label-ia1').innerText = `(${m1})`;
+      document.getElementById('label-ia2').innerText = `(${m2})`;
+      document.getElementById('label-ia3').innerText = `(${m3})`;
+
+      racers.forEach(r => {
+        const el = document.getElementById(`wrapper-${r.id}`);
+        if (el) el.style.left = '0%';
+      });
+
+      zoneIndexActuelle = 0;
+      sautTente = false;
+      fenetreSautOuverte = false;
+      ticksDepuisDebut = 0;
+      holeshotPhase = 'attente';
+      holeshotResultat = null;
+    }
+
+    function demarrerCompteRebours() {
+      const overlay = document.getElementById('overlay-depart');
+      const txt = document.getElementById('txt-compte-rebours');
+      const btn = document.getElementById('btn-holeshot');
+
+      overlay.style.display = 'flex';
+      btn.className = 'btn-holeshot';
+      btn.innerText = 'ATTENDS LE FEU VERT...';
+      txt.innerText = 'PRÊT ?';
+
+      let compte = 3;
+      const timer = setInterval(() => {
+        if (compte > 0) {
+          txt.innerText = compte;
+          compte--;
+        } else {
+          clearInterval(timer);
+          txt.innerText = 'GO !';
+          holeshotPhase = 'vert';
+          btn.classList.add('actif');
+          btn.innerText = 'GAZ ! (CLIQUE !)';
+
+          setTimeout(() => {
+            if (holeshotPhase === 'vert') {
+              holeshotPhase = 'ferme';
+              demarrerMouvementPiste();
+            }
+          }, 600);
+        }
+      }, 700);
+    }
+
+    function tenterHoleshot() {
+      const btn = document.getElementById('btn-holeshot');
+
+      if (holeshotPhase === 'attente') {
+        holeshotPhase = 'faux';
+        holeshotResultat = 'faux';
+        btn.classList.add('faux-depart');
+        btn.innerText = 'FAUX DÉPART ! (-20% Vitesse)';
+      } else if (holeshotPhase === 'vert') {
+        holeshotPhase = 'reussi';
+        holeshotResultat = 'parfait';
+        btn.innerText = 'HOLESHOT PARFAIT ! (+30% Vitesse)';
+        demarrerMouvementPiste();
       }
     }
-  </script>
 
+    function demarrerMouvementPiste() {
+      document.getElementById('overlay-depart').style.display = 'none';
+
+      // Appliquer bonus Holeshot Joueur
+      const j = racers.find(r => r.id === 'joueur');
+      if (holeshotResultat === 'parfait') j.boostSautMulti *= 1.3;
+      if (holeshotResultat === 'faux') j.boostSautMulti *= 0.8;
+
+      intervalCourse = setInterval(tickCourse, 100);
+    }
+
+    function tickCourse() {
+      ticksDepuisDebut++;
+
+      let maxPos = 0;
+      let leaderId = '';
+
+      racers.forEach(r => {
+        if (r.pos < 88) {
+          const vBase = (r.pwr / 12) * r.avantageType * r.boostSautMulti;
+          const alea = (Math.random() * 0.4 + 0.8);
+          r.pos += (vBase * 0.25) * alea;
+          if (r.pos > 88) r.pos = 88;
+        }
+
+        if (r.pos > maxPos) {
+          maxPos = r.pos;
+          leaderId = r.id;
+        }
+
+        const el = document.getElementById(`wrapper-${r.id}`);
+        if (el) el.style.left = `${r.pos}%`;
+      });
+
+      mettreAJourClassementEnTempsReel();
+
+      const joueur = racers.find(r => r.id === 'joueur');
+      gererModuleSaut(joueur.pos);
+
+      if (racers.every(r => r.pos >= 88)) {
+        clearInterval(intervalCourse);
+        finirCourse();
+      }
+    }
+
+    function gererModuleSaut(posJoueur) {
+      if (zoneIndexActuelle >= zonesSaut.length) return;
+
+      const z = zonesSaut[zoneIndexActuelle];
+      const curseur = document.getElementById('curseur-saut');
+      const btn = document.getElementById('btn-declencher-saut');
+      const titre = document.getElementById('titre-saut');
+
+      titre.innerText = `SAUT ${zoneIndexActuelle + 1} — TIMING`;
+
+      let pctIntraZone = 0;
+      if (posJoueur >= z.bonDebut && posJoueur <= z.bonFin) {
+        pctIntraZone = ((posJoueur - z.bonDebut) / (z.bonFin - z.bonDebut)) * 100;
+        curseur.style.left = `${Math.min(96, Math.max(0, pctIntraZone))}%`;
+        fenetreSautOuverte = true;
+        btn.disabled = false;
+        btn.classList.add('actif');
+        btn.innerText = 'SAUTE !';
+      } else {
+        if (posJoueur > z.bonFin && !sautTente) {
+          evaluerSaut('rate');
+        }
+      }
+    }
+
+    function tenterSaut() {
+      if (!fenetreSautOuverte || sautTente) return;
+
+      const joueur = racers.find(r => r.id === 'joueur');
+      const pos = joueur.pos;
+      const z = zonesSaut[zoneIndexActuelle];
+
+      if (pos >= z.parfaitDebut && pos <= z.parfaitFin) {
+        evaluerSaut('parfait');
+      } else if (pos >= z.bonDebut && pos <= z.bonFin) {
+        evaluerSaut('bon');
+      } else {
+        evaluerSaut('rate');
+      }
+    }
+
+    function evaluerSaut(qualite) {
+      sautTente = true;
+      fenetreSautOuverte = false;
+
+      const btn = document.getElementById('btn-declencher-saut');
+      const fb = document.getElementById('txt-feedback-saut');
+      const jIcon = document.getElementById('moto-joueur');
+      const joueur = racers.find(r => r.id === 'joueur');
+
+      btn.disabled = true;
+      btn.classList.remove('actif');
+
+      if (qualite === 'parfait') {
+        fb.style.color = 'var(--mx-green)';
+        fb.innerText = 'SAUT PARFAIT ! 🔥 (+25% Speed)';
+        joueur.boostSautMulti *= 1.25;
+        jIcon.classList.add('en-saut');
+        setTimeout(() => jIcon.classList.remove('en-saut'), 600);
+      } else if (qualite === 'bon') {
+        fb.style.color = 'var(--accent-2)';
+        fb.innerText = 'BON SAUT ! 👍 (+10% Speed)';
+        joueur.boostSautMulti *= 1.10;
+        jIcon.classList.add('en-saut');
+        setTimeout(() => jIcon.classList.remove('en-saut'), 400);
+      } else {
+        fb.style.color = 'var(--danger)';
+        fb.innerText = 'RATER ! ❌ (-15% Speed)';
+        joueur.boostSautMulti *= 0.85;
+      }
+
+      setTimeout(() => {
+        zoneIndexActuelle++;
+        sautTente = false;
+        btn.innerText = `PREPARE LE SAUT ${zoneIndexActuelle + 1}...`;
+      }, 1000);
+    }
+
+    function mettreAJourClassementEnTempsReel() {
+      const tri = [...racers].sort((a, b) => b.pos - a.pos);
+      tri.forEach((r, idx) => {
+        const badge = document.getElementById(`rank-${r.id}`);
+        if (badge) {
+          badge.innerText = idx + 1;
+          if (idx === 0) badge.classList.add('rank-premier');
+          else badge.classList.remove('rank-premier');
+        }
+
+        const icon = document.getElementById(`moto-${r.id}`);
+        if (icon) {
+          if (idx === 0) icon.classList.add('en-tete');
+          else icon.classList.remove('en-tete');
+        }
+      });
+    }
+
+    function finirCourse() {
+      courseEnCours = false;
+      const tri = [...racers].sort((a, b) => b.pos - a.pos);
+      const posJoueur = tri.findIndex(r => r.id === 'joueur') + 1;
+
+      const resDiv = document.getElementById('panneau-resultats');
+      const liste = document.getElementById('liste-resultats');
+      liste.innerHTML = '';
+
+      let gains = 0;
+      if (posJoueur === 1) gains = 150;
+      else if (posJoueur === 2) gains = 80;
+      else if (posJoueur === 3) gains = 40;
+      else gains = 10;
+
+      mesPieces += gains;
+
+      tri.forEach((r, i) => {
+        let nom = (r.id === 'joueur') ? 'Toi' : `Rival ${r.id.replace('ia', '')}`;
+        liste.innerHTML += `<li><b>${i + 1}e</b> : ${nom} (Pwr: ${r.pwr})</li>`;
+      });
+
+      document.getElementById('res-combat').innerText = `Course terminée ! Tu finis ${posJoueur}e et gagnes ${gains} 🪙 !`;
+      resDiv.style.display = 'block';
+
+      sauvegarderEtMettreAJour();
+    }
+  </script>
 </body>
 </html>
