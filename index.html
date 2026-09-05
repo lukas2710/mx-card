@@ -97,9 +97,26 @@
     .btn-action:disabled { background-color: #4b6584; }
     .btn-reset { background-color: #333; color: #ff4757; font-size: 12px; padding: 8px 12px; width: auto; }
 
+    .taux-booster {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .taux-item { font-weight: bold; }
+    .taux-normale { color: #4b6584; }
+    .taux-rare { color: #20bf6b; }
+    .taux-epique { color: #8854d0; }
+    .taux-gold { color: #f7b731; }
+
     .grille-cartes {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
       gap: 10px;
       margin-top: 10px;
     }
@@ -162,7 +179,7 @@
 
     .carte-image {
       width: 100%;
-      height: 48%;
+      height: 45%;
       border-radius: 4px;
       object-fit: cover;
       background: #000;
@@ -179,6 +196,7 @@
       box-shadow: 0 0 10px #00d2d3 !important;
     }
 
+    /* Raretés */
     .normale { background: #4b6584; }
     .rare { background: #20bf6b; }
     .epique { background: #8854d0; }
@@ -188,8 +206,22 @@
       box-shadow: 0 0 12px rgba(247, 183, 49, 0.6);
     }
 
+    .carbone-bg {
+      background: 
+        radial-gradient(black 15%, transparent 16%) 0 0,
+        radial-gradient(black 15%, transparent 16%) 8px 8px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px !important;
+      background-color: #111 !important;
+      background-size: 16px 16px !important;
+      border-color: #f7b731 !important; 
+      box-shadow: 0 0 12px rgba(247, 183, 49, 0.8) !important;
+    }
+
     .marque { font-size: 9px; text-transform: uppercase; font-weight: bold; }
-    .modele { font-size: 12px; font-weight: bold; text-align: center; }
+    .modele { font-size: 11px; font-weight: bold; text-align: center; }
+    .annee { font-size: 8px; text-align: center; color: #d1d8e0; font-weight: bold; }
+    .carbone-bg .annee { color: #f7b731; text-transform: uppercase; letter-spacing: 0.5px; }
     .puissance { font-size: 10px; font-weight: bold; text-align: center; color: #ffeaa7; }
     .rarete { font-size: 8px; text-align: right; text-transform: uppercase; }
 
@@ -209,6 +241,23 @@
       justify-content: center;
       border: 1px solid #fff;
       z-index: 10;
+    }
+
+    /* Badge NEW pour les nouvelles cartes */
+    .badge-new {
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      background: #00d2d3;
+      color: #121212;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 2px 5px;
+      border-radius: 6px;
+      border: 1px solid #fff;
+      box-shadow: 0 0 6px rgba(0, 210, 211, 0.8);
+      z-index: 10;
+      text-transform: uppercase;
     }
 
     .plateau-combat {
@@ -246,6 +295,14 @@
   <!-- SECTION 1 : BOUTIQUE -->
   <section id="sec-boutique" class="actif">
     <h2>Boutique</h2>
+    
+    <div class="taux-booster">
+      <div class="taux-item taux-normale">Normale: 65%</div>
+      <div class="taux-item taux-rare">Rare: 20%</div>
+      <div class="taux-item taux-epique">Épique: 10%</div>
+      <div class="taux-item taux-gold">Gold: 5%</div>
+    </div>
+
     <button id="btn-booster" class="btn-action" onclick="ouvrirBooster()">Ouvrir Booster (50 🪙)</button>
     <p id="indication-booster" style="font-size: 12px; color: #aaa; display: none; text-align: center;">Touche les cartes pour les révéler !</p>
     <div id="booster-zone" class="grille-cartes"></div>
@@ -297,43 +354,39 @@
   </nav>
 
   <script>
-    // =========================================================================
-    // 🖼️ LISTE DES IMAGES DE VOS MOTOS
-    // Remplacez les liens entre guillemets par vos propres liens d'images (.jpg, .png, etc.)
-    // =========================================================================
+    function getAnneeOuEdition(modele, rarete) {
+      if (rarete === "normale") return "2000";
+      if (rarete === "rare") return "2010";
+      if (rarete === "epique") return "2026";
+      if (rarete === "gold") {
+        return (modele === "85 cc") ? "Carbon" : "2026";
+      }
+      return "";
+    }
+
     const imagesMotos = {
       // YAMAHA
-      "Yamaha-85 cc": "https://cdn2.yamaha-motor.eu/prod/product-assets/2027/YZ85LW/2027-Yamaha-YZ85LW-EU-Icon_Blue-Studio-001-03.jpg",
-      "Yamaha-125 cc": "https://cdn2.yamaha-motor.eu/prod/product-assets/2027/YZ125LC/2027-Yamaha-YZ125LC-EU-Icon_Blue-Studio-002-03.jpg",
-      "Yamaha-250 cc": "https://motocrossactionmag.com/wp-content/uploads/2021/07/2022-YAMAHA-YZ250-TWO-STROKE-2.jpg",
-      "Yamaha-450 cc": "https://motocrossactionmag.com/wp-content/uploads/2023/02/YZ450-front-angle.jpg",
+      "Yamaha-85 cc-normale": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-85 cc-rare": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-85 cc-epique": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-85 cc-gold": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
 
-      // HONDA
-      "Honda-85 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-      "Honda-125 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Honda-250 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Honda-450 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-125 cc-normale": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-125 cc-rare": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-125 cc-epique": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-125 cc-gold": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
 
-      // KAWASAKI
-      "Kawasaki-85 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Kawasaki-125 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Kawasaki-250 cc": "https://images.unsplash.com/photo-1558981806-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Kawasaki-450 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-250 cc-normale": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-250 cc-rare": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-250 cc-epique": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-250 cc-gold": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
 
-      // KTM
-      "KTM-85 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "KTM-125 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-      "KTM-250 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "KTM-450 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-
-      // HUSQVARNA
-      "Husqvarna-85 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80",
-      "Husqvarna-125 cc": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80",
-      "Husqvarna-250 cc": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
-      "Husqvarna-450 cc": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80"
+      "Yamaha-450 cc-normale": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-450 cc-rare": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-450 cc-epique": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
+      "Yamaha-450 cc-gold": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80"
     };
 
-    // Image par défaut au cas où un lien manque
     const IMAGE_DEFAUT = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=300&q=80";
 
     const marques = ["Yamaha", "Honda", "Kawasaki", "KTM", "Husqvarna"];
@@ -354,9 +407,17 @@
     afficherAlbum();
     mettreAJourUI();
 
-    function getImageUrl(marque, modele) {
-      const cle = `${marque}-${modele}`;
-      return imagesMotos[cle] || IMAGE_DEFAUT;
+    function tirageRarete() {
+      const rand = Math.random() * 100;
+      if (rand < 65) return "normale"; // 65%
+      if (rand < 85) return "rare";    // 20%
+      if (rand < 95) return "epique";  // 10%
+      return "gold";                  // 5%
+    }
+
+    function getImageUrl(marque, modele, rarete) {
+      const cleSpecifique = `${marque}-${modele}-${rarete}`;
+      return imagesMotos[cleSpecifique] || IMAGE_DEFAUT;
     }
 
     function changerOnglet(nomOnglet, btnEl) {
@@ -416,9 +477,14 @@
       for (let i = 0; i < 3; i++) {
         const marque = tirageAleatoire(marques);
         const modele = tirageAleatoire(cylindrees);
-        const rarete = tirageAleatoire(raretes);
+        const rarete = tirageRarete();
         const cle = `${marque}-${modele}-${rarete}`;
-        const imgUrl = getImageUrl(marque, modele);
+        const imgUrl = getImageUrl(marque, modele, rarete);
+        const texteAnnee = getAnneeOuEdition(modele, rarete);
+        const estCarbone = (modele === "85 cc" && rarete === "gold");
+
+        // Vérifie si la carte est nouvelle AVANT d'incrémenter le compteur
+        const estNouvelle = !monAlbum[cle] || monAlbum[cle] === 0;
 
         monAlbum[cle] = (monAlbum[cle] || 0) + 1;
 
@@ -428,10 +494,12 @@
               <div class="carte-back">
                 <div class="carte-back-logo">🏁</div>
               </div>
-              <div class="carte-front ${rarete}">
+              <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
+                ${estNouvelle ? '<div class="badge-new">NEW</div>' : ''}
                 <div class="marque">${marque}</div>
                 <img class="carte-image" src="${imgUrl}">
                 <div class="modele">${modele}</div>
+                <div class="annee">${texteAnnee}</div>
                 <div class="rarete">${rarete}</div>
               </div>
             </div>
@@ -476,15 +544,18 @@
         let pwr = calculPuissance(modele, rarete);
         if (synergieActive) pwr = Math.round(pwr * 1.15);
 
-        const imgUrl = getImageUrl(marque, modele);
+        const imgUrl = getImageUrl(marque, modele, rarete);
+        const texteAnnee = getAnneeOuEdition(modele, rarete);
+        const estCarbone = (modele === "85 cc" && rarete === "gold");
 
         deckDiv.innerHTML += `
           <div class="carte-container retournee" onclick="basculerCarteDeck('${cle}')">
             <div class="carte-inner">
-              <div class="carte-front ${rarete}">
+              <div class="carte-front ${rarete} ${estCarbone ? 'carbone-bg' : ''}">
                 <div class="marque">${marque}</div>
                 <img class="carte-image" src="${imgUrl}">
                 <div class="modele">${modele}</div>
+                <div class="annee">${texteAnnee}</div>
                 <div class="puissance">⚡ ${pwr}</div>
               </div>
             </div>
@@ -501,7 +572,7 @@
         deckIA.push({
           marque: tirageAleatoire(marques),
           modele: tirageAleatoire(cylindrees),
-          rarete: tirageAleatoire(raretes)
+          rarete: tirageRarete()
         });
       }
 
@@ -518,7 +589,9 @@
 
         const carteIA = deckIA[i];
         const pwrIA = calculPuissance(carteIA.modele, carteIA.rarete);
-        const imgUrlIA = getImageUrl(carteIA.marque, carteIA.modele);
+        const imgUrlIA = getImageUrl(carteIA.marque, carteIA.modele, carteIA.rarete);
+        const texteAnneeIA = getAnneeOuEdition(carteIA.modele, carteIA.rarete);
+        const estCarboneIA = (carteIA.modele === "85 cc" && carteIA.rarete === "gold");
 
         if (pwrJ > pwrIA) victoiresJ++;
         else if (pwrIA > pwrJ) victoiresIA++;
@@ -526,10 +599,11 @@
         deckIADiv.innerHTML += `
           <div class="carte-container retournee">
             <div class="carte-inner">
-              <div class="carte-front ${carteIA.rarete}">
+              <div class="carte-front ${carteIA.rarete} ${estCarboneIA ? 'carbone-bg' : ''}">
                 <div class="marque">${carteIA.marque}</div>
                 <img class="carte-image" src="${imgUrlIA}">
-                <div class="modele">${modele}</div>
+                <div class="modele">${carteIA.modele}</div>
+                <div class="annee">${texteAnneeIA}</div>
                 <div class="puissance">⚡ ${pwrIA}</div>
               </div>
             </div>
@@ -567,11 +641,13 @@
         cylindrees.forEach(modele => {
           raretes.forEach(rarete => {
             const cle = `${marque}-${modele}-${rarete}`;
-            const imgUrl = getImageUrl(marque, modele);
+            const imgUrl = getImageUrl(marque, modele, rarete);
             const quantite = monAlbum[cle] || 0;
             const possedee = quantite > 0;
             const estDansDeck = monDeck.includes(cle);
             const pwr = calculPuissance(modele, rarete);
+            const texteAnnee = getAnneeOuEdition(modele, rarete);
+            const estCarbone = (modele === "85 cc" && rarete === "gold");
 
             if (possedee) cartesDebloquees++;
 
@@ -579,11 +655,12 @@
               <div class="carte-container retournee ${possedee ? '' : 'verrouillee'} ${estDansDeck ? 'selectionnee' : ''}" 
                    onclick="${possedee ? `basculerCarteDeck('${cle}')` : ''}">
                 <div class="carte-inner">
-                  <div class="carte-front ${possedee ? rarete : ''}">
+                  <div class="carte-front ${possedee ? rarete : ''} ${possedee && estCarbone ? 'carbone-bg' : ''}">
                     ${quantite > 1 ? `<div class="badge-compteur">x${quantite}</div>` : ''}
                     <div class="marque">${marque}</div>
                     <img class="carte-image" src="${imgUrl}">
                     <div class="modele">${modele}</div>
+                    <div class="annee">${possedee ? texteAnnee : '----'}</div>
                     <div class="puissance">${possedee ? `⚡ ${pwr}` : ''}</div>
                     <div class="rarete">${possedee ? rarete : '🔒'}</div>
                   </div>
