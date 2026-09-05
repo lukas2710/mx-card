@@ -92,9 +92,10 @@
       border-radius: 12px;
       cursor: pointer;
       margin: 10px 0;
+      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
     }
 
-    .btn-action:disabled { background-color: #4b6584; }
+    .btn-action:disabled { background-color: #4b6584; box-shadow: none; }
     .btn-reset { background-color: #333; color: #ff4757; font-size: 12px; padding: 8px 12px; width: auto; }
 
     .taux-booster {
@@ -179,7 +180,7 @@
 
     .carte-image {
       width: 100%;
-      height: 45%;
+      height: 42%;
       border-radius: 4px;
       object-fit: cover;
       background: #000;
@@ -222,7 +223,8 @@
     .modele { font-size: 11px; font-weight: bold; text-align: center; }
     .annee { font-size: 8px; text-align: center; color: #d1d8e0; font-weight: bold; }
     .carbone-bg .annee { color: #f7b731; text-transform: uppercase; letter-spacing: 0.5px; }
-    .puissance { font-size: 10px; font-weight: bold; text-align: center; color: #ffeaa7; }
+    .puissance { font-size: 9px; font-weight: bold; text-align: center; color: #ffeaa7; }
+    .type-moto { font-size: 8px; text-align: center; font-weight: bold; color: #00d2d3; text-transform: uppercase; }
     .rarete { font-size: 8px; text-align: right; text-transform: uppercase; }
 
     .badge-compteur {
@@ -243,7 +245,6 @@
       z-index: 10;
     }
 
-    /* Badge NEW pour les nouvelles cartes */
     .badge-new {
       position: absolute;
       top: -5px;
@@ -260,17 +261,119 @@
       text-transform: uppercase;
     }
 
-    .plateau-combat {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      background: #1e1e1e;
+    /* PISTE DE COURSE AMÉLIORÉE */
+    .piste-container {
+      background: linear-gradient(180deg, #3e2723 0%, #27150d 100%);
+      border: 3px solid #6d4c41;
+      border-radius: 16px;
       padding: 12px;
-      border-radius: 12px;
+      margin-top: 15px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 8px 16px rgba(0,0,0,0.5);
     }
 
-    .camp h3 { font-size: 14px; margin: 0 0 8px 0; }
-    #res-combat { font-size: 15px; font-weight: bold; color: #f7b731; text-align: center; margin-bottom: 10px; }
+    /* Zone du Saut en 3D sur la piste */
+    .zone-saut-piste {
+      position: absolute;
+      left: 45%;
+      width: 15%;
+      top: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(247, 183, 49, 0.2),
+        rgba(247, 183, 49, 0.2) 10px,
+        rgba(0, 0, 0, 0.3) 10px,
+        rgba(0, 0, 0, 0.3) 20px
+      );
+      border-left: 3px dashed #f7b731;
+      border-right: 3px dashed #f7b731;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rampe-label {
+      font-size: 10px;
+      font-weight: 900;
+      color: #f7b731;
+      text-transform: uppercase;
+      transform: rotate(-90deg);
+      letter-spacing: 1px;
+      text-shadow: 0 0 4px #000;
+    }
+
+    .couloir {
+      position: relative;
+      height: 52px;
+      border-bottom: 2px dashed rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+    }
+
+    .couloir:last-child {
+      border-bottom: none;
+    }
+
+    .pilote-wrapper {
+      position: absolute;
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: left 0.1s linear, transform 0.2s ease;
+      z-index: 2;
+    }
+
+    .pilote-icon {
+      font-size: 26px;
+      filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.6));
+    }
+
+    /* Animations de Saut */
+    .en-saut {
+      transform: translateY(-18px) scale(1.3) rotate(-15deg) !important;
+      filter: drop-shadow(0 15px 8px rgba(0,0,0,0.5)) !important;
+    }
+
+    .effet-boost {
+      animation: boostAnim 0.2s infinite alternate;
+    }
+
+    @keyframes boostAnim {
+      0% { transform: scale(1) rotate(0deg); }
+      100% { transform: scale(1.2) rotate(-5deg); }
+    }
+
+    .ligne-arrivee {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background: repeating-linear-gradient(
+        0deg,
+        #fff,
+        #fff 6px,
+        #000 6px,
+        #000 12px
+      );
+      box-shadow: 0 0 8px rgba(255,255,255,0.5);
+      z-index: 1;
+    }
+
+    .nom-pilote {
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      font-size: 9px;
+      color: #d1d8e0;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
     .synergie-box {
       background: #2d3436;
@@ -282,6 +385,86 @@
       text-align: center;
       margin-bottom: 10px;
       display: none;
+    }
+
+    /* INTERFACE DE TIMING DU SAUT (QTE) */
+    .panneau-saut {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .jauge-saut-container {
+      width: 100%;
+      height: 16px;
+      background: #222;
+      border-radius: 8px;
+      margin: 8px 0;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+
+    .jauge-zone-parfaite {
+      position: absolute;
+      left: 45%;
+      width: 15%;
+      height: 100%;
+      background: #20bf6b;
+      box-shadow: 0 0 8px #20bf6b;
+    }
+
+    .jauge-curseur {
+      position: absolute;
+      left: 0%;
+      width: 4%;
+      height: 100%;
+      background: #fff;
+      box-shadow: 0 0 6px #fff;
+      border-radius: 2px;
+    }
+
+    .btn-saut {
+      width: 100%;
+      background: #4b6584;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-saut.actif {
+      background: linear-gradient(135deg, #20bf6b, #0be881);
+      color: #121212;
+      box-shadow: 0 0 15px rgba(32, 191, 107, 0.8);
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    .feedback-saut {
+      font-size: 14px;
+      font-weight: 900;
+      height: 20px;
+      margin-top: 4px;
+    }
+
+    .info-attributs {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      color: #ccc;
+      margin-bottom: 10px;
+      text-align: center;
     }
   </style>
 </head>
@@ -314,28 +497,66 @@
       <h2>Garage (<span id="total-cartes">0</span>/<span id="max-cartes">0</span>)</h2>
       <button class="btn-action btn-reset" onclick="reinitialiserGarage()">Reset</button>
     </div>
-    <p style="font-size: 12px; color: #aaa;">Touche une carte pour l'ajouter/retirer de ton deck (3 max).</p>
+    <p style="font-size: 12px; color: #aaa;">Touche une carte pour l'ajouter/retirer de ton écurie (3 max).</p>
     <div id="album-zone"></div>
   </section>
 
-  <!-- SECTION 3 : ARENE DE COMBAT -->
+  <!-- SECTION 3 : PISTE DE COURSE -->
   <section id="sec-combat">
-    <h2>Arène de Combat</h2>
-    <div id="res-combat">Sélectionne 3 cartes dans ton Garage !</div>
-    <div id="synergie-info" class="synergie-box">⚡ Synergie Constructeur (+15% puissance) !</div>
+    <h2>Supercross Arena</h2>
+    
+    <div class="info-attributs">
+      ⚡ <b>Vitesse</b> bat Style | 🎨 <b>Style</b> bat Technique | 🛠️ <b>Technique</b> bat Vitesse (+25% Boost)
+    </div>
 
-    <div class="plateau-combat">
-      <div class="camp">
-        <h3>Ton Deck (<span id="count-deck">0</span>/3)</h3>
-        <div id="mon-deck" class="grille-cartes"></div>
+    <div id="res-combat" style="font-size: 14px; font-weight: bold; color: #f7b731; text-align: center; margin-bottom: 10px;">
+      Prépare tes 3 motos dans le Garage !
+    </div>
+    <div id="synergie-info" class="synergie-box">⚡ Synergie Constructeur (+15% Vitesse) !</div>
+
+    <div>
+      <h3>Ton Écurie (<span id="count-deck">0</span>/3 motos)</h3>
+      <div id="mon-deck" class="grille-cartes"></div>
+    </div>
+
+    <div class="piste-container">
+      <div class="zone-saut-piste">
+        <span class="rampe-label"> Appel de Saut </span>
       </div>
-      <div class="camp">
-        <h3>Adversaire</h3>
-        <div id="deck-ia" class="grille-cartes"></div>
+      <div class="ligne-arrivee"></div>
+
+      <div class="couloir">
+        <span class="nom-pilote">Toi</span>
+        <div id="wrapper-joueur" class="pilote-wrapper" style="left: 0%;">
+          <span id="moto-joueur" class="pilote-icon">🏍️</span>
+        </div>
+      </div>
+      <div class="couloir">
+        <span class="nom-pilote" id="nom-ia1">Rival 1</span>
+        <div id="wrapper-ia1" class="pilote-wrapper" style="left: 0%;">
+          <span id="moto-ia1" class="pilote-icon">🏍️</span>
+        </div>
+      </div>
+      <div class="couloir">
+        <span class="nom-pilote" id="nom-ia2">Rival 2</span>
+        <div id="wrapper-ia2" class="pilote-wrapper" style="left: 0%;">
+          <span id="moto-ia2" class="pilote-icon">🏍️</span>
+        </div>
       </div>
     </div>
 
-    <button id="btn-lancer-combat" class="btn-action" onclick="lancerCombat()" disabled>LANCER LE COMBAT</button>
+    <!-- MODULE DE SAUT PARFAIT INTERACTIF -->
+    <div class="panneau-saut">
+      <div style="font-size: 11px; font-weight: bold; color: #aaa;">TIMING DE SAUT</div>
+      <div class="jauge-saut-container">
+        <div class="jauge-zone-parfaite"></div>
+        <div id="curseur-saut" class="jauge-curseur"></div>
+      </div>
+      <button id="btn-declencher-saut" class="btn-saut" onclick="tenterSaut()" disabled>PREPARE LE SAUT...</button>
+      <div id="txt-feedback-saut" class="feedback-saut"></div>
+    </div>
+
+    <button id="btn-lancer-combat" class="btn-action" onclick="lancerCourse()" disabled>DÉMARRER LA COURSE</button>
   </section>
 
   <nav>
@@ -348,8 +569,8 @@
       <span>Garage</span>
     </button>
     <button class="nav-btn" onclick="changerOnglet('combat', this)">
-      <span class="icon">⚔️</span>
-      <span>Combat</span>
+      <span class="icon">🏁</span>
+      <span>Course</span>
     </button>
   </nav>
 
@@ -365,7 +586,6 @@
     }
 
     const imagesMotos = {
-      // YAMAHA
       "Yamaha-85 cc-normale": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
       "Yamaha-85 cc-rare": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
       "Yamaha-85 cc-epique": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=300&q=80",
@@ -393,11 +613,14 @@
     const cylindrees = ["85 cc", "125 cc", "250 cc", "450 cc"];
     const raretes = ["normale", "rare", "epique", "gold"];
     const PRIX_BOOSTER = 50;
-    const multiplicateurRarete = { normale: 1, rare: 1.2, epique: 1.5, gold: 2 };
+    const multiplicateurRarete = { normale: 1, rare: 1.15, epique: 1.3, gold: 1.5 };
 
     let monAlbum = JSON.parse(localStorage.getItem('monAlbumMX')) || {};
     let mesPieces = parseInt(localStorage.getItem('mesPiecesMX')) || 100;
     let monDeck = [];
+    let courseEnCours = false;
+    let sautTente = false;
+    let multiplicateurBoostJoueur = 1.0;
 
     setInterval(() => {
       mesPieces += 5;
@@ -407,12 +630,18 @@
     afficherAlbum();
     mettreAJourUI();
 
+    function getTypeCarte(marque) {
+      if (marque === "Yamaha" || marque === "KTM") return "vitesse";
+      if (marque === "Honda" || marque === "Kawasaki") return "style";
+      return "technique";
+    }
+
     function tirageRarete() {
       const rand = Math.random() * 100;
-      if (rand < 65) return "normale"; // 65%
-      if (rand < 85) return "rare";    // 20%
-      if (rand < 95) return "epique";  // 10%
-      return "gold";                  // 5%
+      if (rand < 65) return "normale";
+      if (rand < 85) return "rare";
+      if (rand < 95) return "epique";
+      return "gold";
     }
 
     function getImageUrl(marque, modele, rarete) {
@@ -451,11 +680,27 @@
       return (marque1 === marque2 && marque2 === marque3);
     }
 
+    function getTypeDominant(deck) {
+      const counts = { vitesse: 0, style: 0, technique: 0 };
+      deck.forEach(cle => {
+        const marque = cle.split('-')[0];
+        counts[getTypeCarte(marque)]++;
+      });
+      return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+    }
+
+    function calculerAvantageType(typeA, typeB) {
+      if (typeA === "vitesse" && typeB === "style") return 1.25;
+      if (typeA === "style" && typeB === "technique") return 1.25;
+      if (typeA === "technique" && typeB === "vitesse") return 1.25;
+      return 1.0;
+    }
+
     function mettreAJourUI() {
       document.getElementById('nb-pieces').innerText = mesPieces;
       document.getElementById('btn-booster').disabled = mesPieces < PRIX_BOOSTER;
       document.getElementById('count-deck').innerText = monDeck.length;
-      document.getElementById('btn-lancer-combat').disabled = monDeck.length < 3;
+      document.getElementById('btn-lancer-combat').disabled = monDeck.length < 3 || courseEnCours;
 
       const synergieBox = document.getElementById('synergie-info');
       if (verifierSynergie()) {
@@ -482,8 +727,8 @@
         const imgUrl = getImageUrl(marque, modele, rarete);
         const texteAnnee = getAnneeOuEdition(modele, rarete);
         const estCarbone = (modele === "85 cc" && rarete === "gold");
+        const typeMoto = getTypeCarte(marque);
 
-        // Vérifie si la carte est nouvelle AVANT d'incrémenter le compteur
         const estNouvelle = !monAlbum[cle] || monAlbum[cle] === 0;
 
         monAlbum[cle] = (monAlbum[cle] || 0) + 1;
@@ -499,6 +744,7 @@
                 <div class="marque">${marque}</div>
                 <img class="carte-image" src="${imgUrl}">
                 <div class="modele">${modele}</div>
+                <div class="type-moto">${typeMoto}</div>
                 <div class="annee">${texteAnnee}</div>
                 <div class="rarete">${rarete}</div>
               </div>
@@ -519,6 +765,7 @@
     }
 
     function basculerCarteDeck(cleCarte) {
+      if (courseEnCours) return;
       const index = monDeck.indexOf(cleCarte);
       if (index > -1) {
         monDeck.splice(index, 1);
@@ -526,7 +773,7 @@
         if (monDeck.length < 3) {
           monDeck.push(cleCarte);
         } else {
-          alert("Deck plein (3 cartes max).");
+          alert("Écurie pleine (3 motos max).");
         }
       }
       afficherDeckJoueur();
@@ -547,6 +794,7 @@
         const imgUrl = getImageUrl(marque, modele, rarete);
         const texteAnnee = getAnneeOuEdition(modele, rarete);
         const estCarbone = (modele === "85 cc" && rarete === "gold");
+        const typeMoto = getTypeCarte(marque);
 
         deckDiv.innerHTML += `
           <div class="carte-container retournee" onclick="basculerCarteDeck('${cle}')">
@@ -555,6 +803,7 @@
                 <div class="marque">${marque}</div>
                 <img class="carte-image" src="${imgUrl}">
                 <div class="modele">${modele}</div>
+                <div class="type-moto">${typeMoto}</div>
                 <div class="annee">${texteAnnee}</div>
                 <div class="puissance">⚡ ${pwr}</div>
               </div>
@@ -564,65 +813,147 @@
       });
     }
 
-    function lancerCombat() {
-      if (monDeck.length < 3) return;
+    function tenterSaut() {
+      if (!courseEnCours || sautTente) return;
+      sautTente = true;
 
-      const deckIA = [];
-      for (let i = 0; i < 3; i++) {
-        deckIA.push({
-          marque: tirageAleatoire(marques),
-          modele: tirageAleatoire(cylindrees),
-          rarete: tirageRarete()
-        });
-      }
+      const curseur = document.getElementById('curseur-saut');
+      const btn = document.getElementById('btn-declencher-saut');
+      const feedback = document.getElementById('txt-feedback-saut');
+      const motoJ = document.getElementById('wrapper-joueur');
 
-      const deckIADiv = document.getElementById('deck-ia');
-      deckIADiv.innerHTML = '';
-      
-      let victoiresJ = 0, victoiresIA = 0;
-      const synergieActive = verifierSynergie();
+      const posCurseur = parseFloat(curseur.style.left);
+      btn.disabled = true;
+      btn.classList.remove('actif');
 
-      monDeck.forEach((cleJoueur, i) => {
-        const [marqueJ, modeleJ, rareteJ] = cleJoueur.split('-');
-        let pwrJ = calculPuissance(modeleJ, rareteJ);
-        if (synergieActive) pwrJ = Math.round(pwrJ * 1.15);
-
-        const carteIA = deckIA[i];
-        const pwrIA = calculPuissance(carteIA.modele, carteIA.rarete);
-        const imgUrlIA = getImageUrl(carteIA.marque, carteIA.modele, carteIA.rarete);
-        const texteAnneeIA = getAnneeOuEdition(carteIA.modele, carteIA.rarete);
-        const estCarboneIA = (carteIA.modele === "85 cc" && carteIA.rarete === "gold");
-
-        if (pwrJ > pwrIA) victoiresJ++;
-        else if (pwrIA > pwrJ) victoiresIA++;
-
-        deckIADiv.innerHTML += `
-          <div class="carte-container retournee">
-            <div class="carte-inner">
-              <div class="carte-front ${carteIA.rarete} ${estCarboneIA ? 'carbone-bg' : ''}">
-                <div class="marque">${carteIA.marque}</div>
-                <img class="carte-image" src="${imgUrlIA}">
-                <div class="modele">${carteIA.modele}</div>
-                <div class="annee">${texteAnneeIA}</div>
-                <div class="puissance">⚡ ${pwrIA}</div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-
-      const resDiv = document.getElementById('res-combat');
-      if (victoiresJ > victoiresIA) {
-        mesPieces += 100;
-        resDiv.innerText = `VICTOIRE ! (${victoiresJ}-${victoiresIA}) +100 🪙`;
-      } else if (victoiresIA > victoiresJ) {
-        resDiv.innerText = `DÉFAITE... (${victoiresJ}-${victoiresIA})`;
+      // Zone parfaite entre 45% et 60%
+      if (posCurseur >= 45 && posCurseur <= 60) {
+        multiplicateurBoostJoueur = 1.8;
+        feedback.innerText = "🔥 SAUT PARFAIT ! (+80% Vitesse)";
+        feedback.style.color = "#20bf6b";
+        motoJ.classList.add('en-saut');
+        if ('vibrate' in navigator) navigator.vibrate([50, 30, 80]);
+        setTimeout(() => motoJ.classList.remove('en-saut'), 800);
+      } else if (posCurseur >= 35 && posCurseur <= 70) {
+        multiplicateurBoostJoueur = 1.3;
+        feedback.innerText = "👍 BON SAUT ! (+30% Vitesse)";
+        feedback.style.color = "#f7b731";
+        motoJ.classList.add('en-saut');
+        setTimeout(() => motoJ.classList.remove('en-saut'), 600);
       } else {
-        mesPieces += 25;
-        resDiv.innerText = `ÉGALITÉ ! (${victoiresJ}-${victoiresIA}) +25 🪙`;
+        multiplicateurBoostJoueur = 0.9;
+        feedback.innerText = "❌ RATÉ / MAUVAIS TIMING !";
+        feedback.style.color = "#ff4757";
       }
+    }
 
-      sauvegarderEtMettreAJour();
+    function lancerCourse() {
+      if (monDeck.length < 3 || courseEnCours) return;
+
+      courseEnCours = true;
+      sautTente = false;
+      multiplicateurBoostJoueur = 1.0;
+
+      document.getElementById('btn-lancer-combat').disabled = true;
+      document.getElementById('res-combat').innerText = "🏁 Course en cours ! Prépare ton saut !";
+      document.getElementById('txt-feedback-saut').innerText = "";
+
+      const btnSaut = document.getElementById('btn-declencher-saut');
+      btnSaut.innerText = "ATTENDS LE BON TIMING...";
+      btnSaut.disabled = true;
+      btnSaut.classList.remove('actif');
+
+      // Decks AI
+      const deckIA1 = [
+        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
+        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
+        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`
+      ];
+      const deckIA2 = [
+        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
+        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`,
+        `${tirageAleatoire(marques)}-${tirageAleatoire(cylindrees)}-${tirageRarete()}`
+      ];
+
+      const typeJ = getTypeDominant(monDeck);
+      const typeIA1 = getTypeDominant(deckIA1);
+      const typeIA2 = getTypeDominant(deckIA2);
+
+      let pwrJoueur = 0, pwrIA1 = 0, pwrIA2 = 0;
+
+      monDeck.forEach(c => { const [m, mod, r] = c.split('-'); pwrJoueur += calculPuissance(mod, r); });
+      deckIA1.forEach(c => { const [m, mod, r] = c.split('-'); pwrIA1 += calculPuissance(mod, r); });
+      deckIA2.forEach(c => { const [m, mod, r] = c.split('-'); pwrIA2 += calculPuissance(mod, r); });
+
+      if (verifierSynergie()) pwrJoueur *= 1.15;
+
+      pwrJoueur *= Math.max(calculerAvantageType(typeJ, typeIA1), calculerAvantageType(typeJ, typeIA2));
+      pwrIA1 *= calculerAvantageType(typeIA1, typeJ);
+      pwrIA2 *= calculerAvantageType(typeIA2, typeJ);
+
+      const wrapperJ = document.getElementById('wrapper-joueur');
+      const wrapperIA1 = document.getElementById('wrapper-ia1');
+      const wrapperIA2 = document.getElementById('wrapper-ia2');
+      const curseur = document.getElementById('curseur-saut');
+
+      document.getElementById('nom-ia1').innerText = `Rival (${typeIA1})`;
+      document.getElementById('nom-ia2').innerText = `Rival (${typeIA2})`;
+
+      let posJ = 0, posIA1 = 0, posIA2 = 0;
+      wrapperJ.style.left = '0%';
+      wrapperIA1.style.left = '0%';
+      wrapperIA2.style.left = '0%';
+
+      let fenetreSautOuverte = false;
+
+      const intervalle = setInterval(() => {
+        posJ += ((pwrJoueur / 140) + (Math.random() * 1.2)) * multiplicateurBoostJoueur;
+        posIA1 += (pwrIA1 / 140) + (Math.random() * 1.2);
+        posIA2 += (pwrIA2 / 140) + (Math.random() * 1.2);
+
+        wrapperJ.style.left = Math.min(posJ, 80) + '%';
+        wrapperIA1.style.left = Math.min(posIA1, 80) + '%';
+        wrapperIA2.style.left = Math.min(posIA2, 80) + '%';
+
+        // Synchronisation curseur de la jauge avec l'avancée de la moto du joueur
+        let pctSaut = (posJ / 80) * 100;
+        curseur.style.left = Math.min(pctSaut, 96) + '%';
+
+        // Activation du bouton lorsque la moto approche du saut (35% - 65%)
+        if (pctSaut >= 35 && pctSaut <= 65 && !sautTente) {
+          if (!fenetreSautOuverte) {
+            fenetreSautOuverte = true;
+            btnSaut.disabled = false;
+            btnSaut.classList.add('actif');
+            btnSaut.innerText = "🚀 APPUIS MAINTENANT !";
+          }
+        } else if (pctSaut > 65 && !sautTente) {
+          btnSaut.disabled = true;
+          btnSaut.classList.remove('actif');
+          btnSaut.innerText = "TROP TARD !";
+        }
+
+        if (posJ >= 80 || posIA1 >= 80 || posIA2 >= 80) {
+          clearInterval(intervalle);
+          courseEnCours = false;
+
+          btnSaut.disabled = true;
+          btnSaut.classList.remove('actif');
+          btnSaut.innerText = "COURSE TERMINÉE";
+
+          const resDiv = document.getElementById('res-combat');
+          if (posJ >= posIA1 && posJ >= posIA2) {
+            mesPieces += 100;
+            resDiv.innerText = "🏆 VICTOIRE ÉPIQUE ! Tu remportes la course ! (+100 🪙)";
+          } else if (posJ >= posIA1 || posJ >= posIA2) {
+            mesPieces += 40;
+            resDiv.innerText = "🥈 2ème Place ! Très bon pilotage. (+40 🪙)";
+          } else {
+            resDiv.innerText = "🥉 3ème Place... Améliore ton timing au saut !";
+          }
+          sauvegarderEtMettreAJour();
+        }
+      }, 90);
     }
 
     function afficherAlbum() {
@@ -634,7 +965,8 @@
 
       marques.forEach(marque => {
         let section = document.createElement('div');
-        section.innerHTML = `<h3 style="color:#ffeaa7; margin: 15px 0 5px 0; font-size:14px;">${marque}</h3>`;
+        const typeM = getTypeCarte(marque);
+        section.innerHTML = `<h3 style="color:#ffeaa7; margin: 15px 0 5px 0; font-size:14px;">${marque} <span style="font-size:10px; color:#00d2d3;">(${typeM})</span></h3>`;
         let grille = document.createElement('div');
         grille.className = 'grille-cartes';
 
@@ -660,6 +992,7 @@
                     <div class="marque">${marque}</div>
                     <img class="carte-image" src="${imgUrl}">
                     <div class="modele">${modele}</div>
+                    <div class="type-moto">${possedee ? typeM : ''}</div>
                     <div class="annee">${possedee ? texteAnnee : '----'}</div>
                     <div class="puissance">${possedee ? `⚡ ${pwr}` : ''}</div>
                     <div class="rarete">${possedee ? rarete : '🔒'}</div>
